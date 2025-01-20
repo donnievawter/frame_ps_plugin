@@ -1,4 +1,4 @@
-# photoshopimageframe
+# frame_ps_plugin
 Automated generation of a virtual frame for an image
 
 This project is designed to add virtual frames to an image in Photoshop.
