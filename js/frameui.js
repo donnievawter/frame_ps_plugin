@@ -27,6 +27,11 @@ document.getElementById('step1Button').addEventListener('click', async () => {
       console.log(frame.activeLayers[0].name);
       //turn off layer effects
       await useLayerEffects(frame, frame.activeLayers[0].name, false);
+       const step1FinishedElement = document.getElementById('step1finished');
+        step1FinishedElement.innerHTML = "Frame chosen: "+app.activeDocument.name;
+        step1FinishedElement.style.display = 'block';
+
+
 
     } catch (error) {
       console.error("Error:", error);
@@ -39,9 +44,10 @@ document.getElementById('step2Button').addEventListener('click', async () => {
     try {
       const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
       console.log(suffix);
-      if (!(suffix === '.psd')) {
-        await app.showAlert('Please save as a photoshop document.');
-      }
+        const step2FinishedElement = document.getElementById('step2finished');
+        step2FinishedElement.innerHTML = "Image chosen: "+app.activeDocument.name;
+        step2FinishedElement.style.display = 'block';
+
     } catch (error) {
       console.error("Error:", error);
     }

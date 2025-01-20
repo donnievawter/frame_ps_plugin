@@ -15,20 +15,20 @@
       "type": "panel",
       "id": "addframe",
       "minimumSize": {
-        "width": 350,
-        "height": 500
+        "width": 600,
+        "height": 800
       },
       "maximumSize": {
         "width": 2000,
         "height": 2000
       },
       "preferredDockedSize": {
-        "width":350,
-        "height": 500
+        "width":600,
+        "height": 800
       },
       "preferredFloatingSize": {
-        "width": 350,
-        "height": 500
+        "width": 600,
+        "height": 800
       },
       "label": {
         "default": "Add Frame"

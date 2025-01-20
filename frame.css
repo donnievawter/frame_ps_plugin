@@ -24,7 +24,9 @@ h1 {
 .red {
     color: #cb2626;
 }
-
+label{
+font-size: 2em;
+}
 .dialog-input {
     display: block;
     width: calc(100% - 20px);
@@ -47,9 +49,9 @@ h1 {
 .dialog, dialoghtml {
     border: 1px solid #ccc;
     padding: 20px;
-    width: 400px;
+    width: 450px;
     margin: 20px auto;
-    background: #f9f9f9;
+    display: flex;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     /* Rounded corners for the dialog */
@@ -57,9 +59,10 @@ h1 {
 }
 
 /* Common text styles */
-.dialog-text {
+.dialog-text  {
     margin: 10px 0;
-    color: #161414;
+    
+    font-size: 2em;
 }
 
 .dialog-text.blue {
@@ -118,4 +121,8 @@ h1 {
     border: 1px solid #000;
     margin-left: 10px;
     vertical-align: middle;
+}
+#step2finished ,#step1finished{
+display: none;
+color: rgb(101, 194, 101)
 }
