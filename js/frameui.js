@@ -23,11 +23,11 @@ document.getElementById('step1Button').addEventListener('click', async () => {
     try {
       // Step 1 handler code here
       frame = await app.activeDocument;
-      console.log("activelayer name");
-      console.log(frame.activeLayers[0].name);
+      // console.log("activelayer name");
+      // console.log(frame.activeLayers[0].name);
       //turn off layer effects
       await useLayerEffects(frame, frame.activeLayers[0].name, false);
-       const step1FinishedElement = document.getElementById('step1finished');
+      frame = app.activeDocument;
         step1FinishedElement.innerHTML = "Frame chosen: "+app.activeDocument.name;
         step1FinishedElement.style.display = 'block';
 
@@ -43,7 +43,7 @@ document.getElementById('step2Button').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
       const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
-      console.log(suffix);
+      // console.log(suffix);
         const step2FinishedElement = document.getElementById('step2finished');
         step2FinishedElement.innerHTML = "Image chosen: "+app.activeDocument.name;
         step2FinishedElement.style.display = 'block';
@@ -58,7 +58,7 @@ document.getElementById('completedButton').addEventListener('click', async () =>
   await photoshop.core.executeAsModal(async () => {
     try {
       const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
-      console.log(suffix);
+      // console.log(suffix);
       if (!(suffix === '.psd')) {
         await app.showAlert('Please save as a photoshop document before hitting completed.');
         return;
@@ -66,7 +66,7 @@ document.getElementById('completedButton').addEventListener('click', async () =>
 
 
       image = app.activeDocument;
-      console.log(image);
+      // console.log(image);
       renameBackGround("originalPic");
       image.createLayerGroup({ fromLayers: image.layers, name: "pic" });
       // dialog0.close();
@@ -120,10 +120,10 @@ document.getElementById('chooseColor').addEventListener('click', async () => {
         _obj: "showColorPicker"
       };
       const res = await photoshop.action.batchPlay([openPicker], {});
-      console.log("color picker");
-      console.log(res[0]);
+      // console.log("color picker");
+      // console.log(res[0]);
       rgbFloat = res[0].RGBFloatColor;
-      console.log(rgbFloat);
+      // console.log(rgbFloat);
 
       // Use 'grain' if it exists, otherwise fall back to 'green'
       const greenValue = rgbFloat.grain !== undefined ? rgbFloat.grain : rgbFloat.green;
@@ -166,7 +166,7 @@ document.getElementById('wearedone').addEventListener('click', async () => {
 
       localStorage.setItem('userPreferences', JSON.stringify(userInput));
 
-      console.log(localStorage.getItem('userPreferences'));
+      // console.log(localStorage.getItem('userPreferences'));
       await processResults(userInput);
       dialog.close();
     } catch (error) {
