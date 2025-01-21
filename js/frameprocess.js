@@ -537,6 +537,7 @@ async function destroyVars() {
     matFloat = null;
   document.getElementById('step1finished').style.display = 'none';
   document.getElementById('step2finished').style.display = 'none';
+  document.getElementById('completedButton').style.display='none';
 
 }
 async function logDocuments() {

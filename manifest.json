@@ -16,7 +16,7 @@
       "id": "addframe",
       "minimumSize": {
         "width": 600,
-        "height": 800
+        "height": 600
       },
       "maximumSize": {
         "width": 2000,
@@ -24,11 +24,11 @@
       },
       "preferredDockedSize": {
         "width":600,
-        "height": 800
+        "height": 600
       },
       "preferredFloatingSize": {
         "width": 600,
-        "height": 800
+        "height": 600
       },
       "label": {
         "default": "Add Frame"

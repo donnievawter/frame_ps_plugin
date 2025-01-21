@@ -28,6 +28,7 @@ document.getElementById('step1Button').addEventListener('click', async () => {
       //turn off layer effects
       await useLayerEffects(frame, frame.activeLayers[0].name, false);
       frame = app.activeDocument;
+     const step1FinishedElement=document.getElementById("step1finished");
         step1FinishedElement.innerHTML = "Frame chosen: "+app.activeDocument.name;
         step1FinishedElement.style.display = 'block';
 
@@ -47,7 +48,7 @@ document.getElementById('step2Button').addEventListener('click', async () => {
         const step2FinishedElement = document.getElementById('step2finished');
         step2FinishedElement.innerHTML = "Image chosen: "+app.activeDocument.name;
         step2FinishedElement.style.display = 'block';
-
+document.getElementById('completedButton').style.display='block';
     } catch (error) {
       console.error("Error:", error);
     }
@@ -57,12 +58,12 @@ document.getElementById('step2Button').addEventListener('click', async () => {
 document.getElementById('completedButton').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
-      const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
+   //   const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
       // console.log(suffix);
-      if (!(suffix === '.psd')) {
-        await app.showAlert('Please save as a photoshop document before hitting completed.');
-        return;
-      }
+    //  if (!(suffix === '.psd')) {
+    //    await app.showAlert('Please save as a photoshop document before hitting completed.');
+    //    return;
+    //}
 
 
       image = app.activeDocument;
@@ -100,14 +101,25 @@ document.getElementById('completedButton').addEventListener('click', async () =>
 document.getElementById('cancelButton').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
-      //dialog0.close();
+     destroyVars();
+      //dialog.close();
       // Cancel handler code here
     } catch (error) {
       console.error("Error:", error);
     }
   });
 });
-
+document.getElementById('bailout').addEventListener('click', async () => {
+  await photoshop.core.executeAsModal(async () => {
+    try {
+     destroyVars();
+      dialog.close();
+      // Cancel handler code here
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
+});
 
 
 // Event listener for Choose Color button

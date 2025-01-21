@@ -20,10 +20,12 @@ This project is designed to add virtual frames to an image in Photoshop.
   
    ![Choose Files](assets/choosefiles.png)
 1. Choose the frame file and make it active.
-2. Press "Step 1" button
-3. Open the image you want to frame and save it as a psd file
+2. Press "Step 1" button.
+3. Note that any layer effects on the frame will be disabled. This may change the appearance of the frame. Don't worry. They will be re-enabled after processing.
+3. Open the image you want to frame
 4. Press "Step 2" button
-5. Press the "Completed" button
+5. Press the "Process" button
+6. Press the "Clear" button if you want to change files.
 
 ## Setting the parameters:
   You will be presented with this panel  
@@ -34,7 +36,7 @@ This project is designed to add virtual frames to an image in Photoshop.
 3. Bottom padding moves the image file up or down within the mat. 100 is a good starting point if you have a title. 0 will leave it centered vertically
 4. Choose Color opens a color picker to choose the color of the mat
 5. Expansion ratio determines the width of the mat. If you choose 1, you will have no mat and the frame will crop your imagae. 1.31 is a good starting point.
-6. Choose OK to process the image
+6. Choose OK to process the image, Cancel to return to the main panel
 
 
 ## Working with the included Frame

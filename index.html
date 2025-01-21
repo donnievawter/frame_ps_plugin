@@ -1,67 +1,68 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Add Frame</title>
   <script src="js/frameui.js"></script>
   <script src="js/frameprocess.js"></script>
-     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Initialize Dialog</title>
-    <link rel="stylesheet" href="frame.css"> <!-- Reference your common stylesheet -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Initialize Dialog</title>
+  <link rel="stylesheet" href="frame.css"> <!-- Reference your common stylesheet -->
 
-  
+
 </head>
+
 <body>
 
-<div class="dialoghtml" id="initializeDialog">
-  <h1>Choose your files</h1> 
-  <p class="dialog-text">Please open the image file you want to use as a frame.</p>
-  <p class="dialog-text blue"> Hit the "Step 1" button when you are finished.</p>
- <p class="dialog-text blue" id="step1finished">placeholder</p>
-  <button type="button" class="dialog-button" id="step1Button">Step 1</button>
-  <p class="dialog-text">Please open the image file you want to frame.</p>
-  <p class="dialog-text blue">Hit the "Step 2" button when you are finished.</p>
-  <p class="dialog-text blue" id="step2finished">placeholder</p>
-  <button type="button" class="dialog-button" id="step2Button">Step 2</button>
-  <p class="dialog-text">Please save the image file as a PSD with the name you desire,</p>
-  <p class="dialog-text">perhaps the original file's name with _framed appended.</p>
-  <p class="dialog-text">You can choose the location. Do not close the file.</p>
-  <p class="dialog-text blue">Hit the "Completed" button when finished.</p>
-  <button type="button" class="dialog-button" id="completedButton">Completed</button>
-  <button type="button" class="dialog-button cancel" id="cancelButton">Cancel</button>
-</div>
-
-<dialog class="dialog" id="exampleDialog">
-  <h1>Parameters</h1>
-  <form method="dialog">
-    <p>
-      <label>Enter title:</label>
-      <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
-    </p>
-    <p>
-      <label>Title position offset:</label>
-      <input class="dialog-input" type="text" id="titlePositionOffset" name="titlePositionOffset" placeholder="Enter title position offset">
-    </p>
-    <p>
-      <label>Bottom Padding:</label>
-      <input class="dialog-input" type="text" id="bottomPadding" name="bottomPadding" placeholder="100">
-    </p>
-    <p>
-      <label>Mat Color:</label>
-      <button class="dialog-button " type="button" id="chooseColor">Choose Color...</button>
-      <div id="colorSwatch" class="color-swatch"></div>
-    </p>
-    <p>
-      <label>Expansion ratio:</label>
-      <input class="dialog-input" type="text" id="expansionRatio" name="expansionRatio" placeholder="1.31">
-    </p>
-    <div class="button-container">
-      <button class="dialog-button" id="wearedone" type="submit">OK</button>
-      <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
+  <div class="dialoghtml" id="initializeDialog">
+    <h1>Choose your files</h1>
+    <p class="dialog-text">Please open the image file you want to use as a frame.</p>
+    <p class="dialog-text blue"> Hit the "Step 1" button when you are finished.</p>
+    <p class="dialog-text blue" id="step1finished">placeholder</p>
+    <button type="button" class="dialog-button" id="step1Button">Step 1</button>
+    <p class="dialog-text">Please open the image file you want to frame.</p>
+    <p class="dialog-text blue">Hit the "Step 2" button when you are finished.</p>
+    <p class="dialog-text blue" id="step2finished">placeholder</p>
+    <div style="text-align: center;"></div>
+      <button type="button" class="dialog-button" id="step2Button" >Step 2</button>
+      <button type="button" class="dialog-button" id="completedButton" >Process</button>
+      <button type="button" class="dialog-button cancel" id="cancelButton" >Clear</button>
     </div>
-  </form>
-</dialog>
+  </div>
+
+  <dialog class="dialog" id="exampleDialog">
+    <h1>Parameters</h1>
+    <form method="dialog">
+      <p>
+        <label>Enter title:</label>
+        <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
+      </p>
+      <p>
+        <label>Title position offset:</label>
+        <input class="dialog-input" type="text" id="titlePositionOffset" name="titlePositionOffset"
+          placeholder="Enter title position offset">
+      </p>
+      <p>
+        <label>Bottom Padding:</label>
+        <input class="dialog-input" type="text" id="bottomPadding" name="bottomPadding" placeholder="100">
+      </p>
+      <p>
+        <label>Mat Color:</label>
+        <button class="dialog-button " type="button" id="chooseColor">Choose Color...</button>
+      <div id="colorSwatch" class="color-swatch"></div>
+      </p>
+      <p>
+        <label>Expansion ratio:</label>
+        <input class="dialog-input" type="text" id="expansionRatio" name="expansionRatio" placeholder="1.31">
+      </p>
+      <div class="button-container">
+        <button class="dialog-button" id="wearedone" type="submit">OK</button>
+        <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
+      </div>
+    </form>
+  </dialog>
 
 
- 
+
 </html>

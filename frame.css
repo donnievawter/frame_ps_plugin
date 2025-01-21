@@ -27,6 +27,9 @@ h1 {
 label{
 font-size: 2em;
 }
+#completedButton{
+display: none;
+}
 .dialog-input {
     display: block;
     width: calc(100% - 20px);
@@ -75,8 +78,8 @@ font-size: 2em;
 
 /* Common button styles */
 .dialog-button {
-    display: inline-block;
-    margin: 10px 5px;
+    display: block;
+    margin: 30px 5px;
     padding: 10px 20px;
     background: #007bff;
     color: #fff;
