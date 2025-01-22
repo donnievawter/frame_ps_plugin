@@ -1,9 +1,58 @@
 const { storage } = require('uxp');
 const photoshop = require('photoshop');
 const { constants } = require("photoshop");
+let dialog, rgbFloat, fontChoice, fontSize;
+async function buildFontDropdown() {
+  //lets also set size
+  const ol = document.getElementById('fontSize').options;
+ console.log(fontSize +" " +ol.length);
+  ol.forEach(o => {
+    if (o.value == fontSize) {
+      o.selected = true;
+
+    }
+  });
+
+  const dropdown = document.getElementById('fontDropDown');
+  const fonts = app.fonts;
+  console.log("in buildfontdropdown");
+  console.log(fontChoice);
+  fonts.forEach(font => {
+    try {
+      let option = document.createElement('option');
+      option.textContent = font.name;
+      option.value = [font.postScriptName, font.name];
+      option.class = "white";
+      if (fontChoice && font.postScriptName == fontChoice[0]) {
+        option.selected = true;
+      }
+
+      dropdown.appendChild(option);
+
+    } catch (e) {
+      console.log(e);
+    }// Use appendChild to add options
+
+  });
+}
+
+document.getElementById('fontDropDown').addEventListener('change', function () {
+  const selectedFont = this.value;
+  console.log('Selected font:', selectedFont);
+  console.log(this.selectedOptions[0].textContent);
+  console.log(this.selectedOptions[0].value);
+  // Add your custom logic here
+});
+document.getElementById('fontSize').addEventListener('change', function () {
+ fontSize = this.value;
+  console.log('Selected Size:', fontSize);
+  
+});
 
 
-let dialog, rgbFloat;
+
+
+
 
 
 //const { app, core, action, fs } = require('photoshop');
@@ -28,9 +77,9 @@ document.getElementById('step1Button').addEventListener('click', async () => {
       //turn off layer effects
       await useLayerEffects(frame, frame.activeLayers[0].name, false);
       frame = app.activeDocument;
-     const step1FinishedElement=document.getElementById("step1finished");
-        step1FinishedElement.innerHTML = "Frame chosen: "+app.activeDocument.name;
-        step1FinishedElement.style.display = 'block';
+      const step1FinishedElement = document.getElementById("step1finished");
+      step1FinishedElement.innerHTML = "Frame chosen: " + app.activeDocument.name;
+      step1FinishedElement.style.display = 'block';
 
 
 
@@ -45,10 +94,10 @@ document.getElementById('step2Button').addEventListener('click', async () => {
     try {
       const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
       // console.log(suffix);
-        const step2FinishedElement = document.getElementById('step2finished');
-        step2FinishedElement.innerHTML = "Image chosen: "+app.activeDocument.name;
-        step2FinishedElement.style.display = 'block';
-document.getElementById('completedButton').style.display='block';
+      const step2FinishedElement = document.getElementById('step2finished');
+      step2FinishedElement.innerHTML = "Image chosen: " + app.activeDocument.name;
+      step2FinishedElement.style.display = 'block';
+      document.getElementById('completedButton').style.display = 'block';
     } catch (error) {
       console.error("Error:", error);
     }
@@ -58,12 +107,12 @@ document.getElementById('completedButton').style.display='block';
 document.getElementById('completedButton').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
-   //   const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
+      //   const suffix = app.activeDocument.name.substring(app.activeDocument.name.lastIndexOf(".")).toLowerCase();
       // console.log(suffix);
-    //  if (!(suffix === '.psd')) {
-    //    await app.showAlert('Please save as a photoshop document before hitting completed.');
-    //    return;
-    //}
+      //  if (!(suffix === '.psd')) {
+      //    await app.showAlert('Please save as a photoshop document before hitting completed.');
+      //    return;
+      //}
 
 
       image = app.activeDocument;
@@ -80,17 +129,24 @@ document.getElementById('completedButton').addEventListener('click', async () =>
         document.getElementById('expansionRatio').value = savedPreferences.expansionRatio || '1.31';
         rgbColor = savedPreferences.matColor || '`rgb(255, 255, 255)`';
         rgbFloat = savedPreferences.matFloat || { red: 255, grain: 255, blue: 255 };
-      }else{
-       document.getElementById('titleInput').value = '';
-        document.getElementById('titlePositionOffset').value =  '40';
+        fontChoice = savedPreferences.fontChoice;
+        fontSize = savedPreferences.fontSize || 24;
+      } else {
+        document.getElementById('titleInput').value = '';
+        document.getElementById('titlePositionOffset').value = '40';
         document.getElementById('bottomPadding').value = '100';
-        document.getElementById('colorSwatch').style.backgroundColor =  '`rgb(255, 255, 255)`';
+        document.getElementById('colorSwatch').style.backgroundColor = '`rgb(255, 255, 255)`';
         document.getElementById('expansionRatio').value = '1.31';
-        rgbColor =  '`rgb(255, 255, 255)`';
-        rgbFloat =  { red: 255, grain: 255, blue: 255 };
-  
+        rgbColor = '`rgb(255, 255, 255)`';
+        rgbFloat = { red: 255, grain: 255, blue: 255 };
+        fontChoice = ["BodoniSvtyTwoSCITCTT-Book", "Bodoni 72 Smallcaps Book"];
+        fontSize = 24;
       }
+      console.log(fontChoice);
+      console.log("calling buildFontDropdown");
+      buildFontDropdown();
       dialog.show();
+      // buildFontDropdown();
       // Completed handler code here
     } catch (error) {
       console.error("Error:", error);
@@ -101,7 +157,7 @@ document.getElementById('completedButton').addEventListener('click', async () =>
 document.getElementById('cancelButton').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
-     destroyVars();
+      destroyVars();
       //dialog.close();
       // Cancel handler code here
     } catch (error) {
@@ -112,7 +168,7 @@ document.getElementById('cancelButton').addEventListener('click', async () => {
 document.getElementById('bailout').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
-     destroyVars();
+      destroyVars();
       dialog.close();
       // Cancel handler code here
     } catch (error) {
@@ -153,9 +209,15 @@ async function showPhotoshop() {
   });
 
 }
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Call this function when your plugin initializes
+
+
+
   dialog0 = document.getElementById('initializeDialog');
   showPhotoshop();
+
   //dialog1 = document.getElementById('initializeDialog');
   dialog = document.getElementById('exampleDialog');
   //dialog1.show();
@@ -165,7 +227,7 @@ document.getElementById('wearedone').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
       // Retrieve user preferences from local storage and prefill the form
-
+      fontChoice = document.getElementById("fontDropDown").value || ["BodoniSvtyTwoSCITCTT-Book", "Bodoni 72 Smallcaps Book"];
       // Save user preferences to local storage
       const userInput = {
         title: document.getElementById('titleInput').value,
@@ -174,6 +236,9 @@ document.getElementById('wearedone').addEventListener('click', async () => {
         matColor: rgbColor,
         matFloat: rgbFloat,
         expansionRatio: document.getElementById('expansionRatio').value,
+        fontChoice: fontChoice,
+        fontSize: document.getElementById('fontSize').value
+
       };
 
       localStorage.setItem('userPreferences', JSON.stringify(userInput));
@@ -182,6 +247,7 @@ document.getElementById('wearedone').addEventListener('click', async () => {
       await processResults(userInput);
       dialog.close();
     } catch (error) {
+      console.log("in wearedone catch");
       console.error("error", error);
     }
 
@@ -190,5 +256,5 @@ document.getElementById('wearedone').addEventListener('click', async () => {
 
 document.querySelector('button[type="reset"]').addEventListener('click', () => {
   // dialog.close();
-  dialog1.close();
+  //  dialog1.close();
 });

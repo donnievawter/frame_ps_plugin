@@ -194,12 +194,12 @@ async function addTitle(text, offset, padding) {
             width: image.width / 5,
             height: image.height / 50
         }
-        const pixHeight = pos.height;
-
+        const pixHeight =pos.height*50/1200* parseInt(fontSize,10);;
+console.log(pixHeight);
         theLayer = await image.createTextLayer({
             name: "title",
             contents: text,
-            fontName: "BodoniSvtyTwoSCITCTT-Book",
+            fontName: fontChoice[0],
             fontSize: pixHeight,
             position: pos,
             justification: constants.Justification.CENTER
@@ -515,8 +515,11 @@ async function processUserInput(userInput) {
     matColor = userInput.matColor;
     matFloat = userInput.matFloat;
     expansionRatio = userInput.expansionRatio;
-    // console.log("inputs generated");
+    fontChoice=userInput.fontChoice;
+    console.log(fontChoice);
+       // console.log("inputs generated");
     // console.log(matFloat);
+     
 }
 
 async function selectFrame() {
@@ -535,6 +538,8 @@ async function destroyVars() {
     matColor = null;
     expansionRatio = null;
     matFloat = null;
+    fontChoice=null;
+    fontSize=null
   document.getElementById('step1finished').style.display = 'none';
   document.getElementById('step2finished').style.display = 'none';
   document.getElementById('completedButton').style.display='none';

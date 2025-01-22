@@ -1,6 +1,8 @@
 /* Common dialog styles */
 /* Enhanced input fields */
-
+.white{
+color: #fff;
+}
  body {
     display: flex;
     justify-content: center;
@@ -11,6 +13,19 @@
   .dialoghtml {
     text-align: center;
   }
+/* CSS for dropdown width and font color */
+#fontDropdown {
+    width: 200px; /* Adjust the width as needed */
+    color: #ffffff; /* Change to white */
+    background-color: #333333; /* Add a background color */
+}
+
+/* Ensure all options inherit the font color */
+#fontDropdown option {
+    color: #ffffff; /* Change to white */
+    background-color: #333333; /* Ensure background color */
+}
+
 
 h1 {
     font-size: xx-large;
