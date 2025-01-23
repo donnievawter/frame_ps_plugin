@@ -80,9 +80,9 @@ document.getElementById('step1Button').addEventListener('click', async () => {
       const step1FinishedElement = document.getElementById("step1finished");
       step1FinishedElement.innerHTML = "Frame chosen: " + app.activeDocument.name;
       step1FinishedElement.style.display = 'block';
-
-
-
+     // await calculateFrameThickness(frame);
+console.log("calling calling getTransparent");
+await getTransparent();
     } catch (error) {
       console.error("Error:", error);
     }

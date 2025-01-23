@@ -530,6 +530,7 @@ async function selectFrame() {
     );
 }
 async function destroyVars() {
+    await calculateFrameThickness(frame);
     frame = null;
     image = null;
     title = null;
@@ -566,3 +567,103 @@ async function flattenImage(im) {
 
     // console.log(app.activeDocument.name + " " + app.activeDocument.layers.length);
 }
+async function calculateFrameThickness(theFrame) {
+    try {
+        const document = theFrame;
+
+        // Export the document to a temporary PNG file
+        const tempFolder = await fs.getTemporaryFolder();
+        const tempFile = await tempFolder.createFile("temp-layer.png", { overwrite: true });
+        await document.saveAs.png(tempFile, false);
+
+        // Read the file as a base64 data URL
+        const fileData = await tempFile.read({ format: storage.formats.binary });
+        
+        const base64String = btoa(String.fromCharCode(...new Uint8Array(fileData)));
+        const dataUrl = `data:image/png;base64,${base64String}`;
+
+        const img = new Image();
+
+        img.onload = () => {
+            console.log("Image loaded successfully");
+
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const context = canvas.getContext('2d');
+            context.drawImage(img, 0, 0);
+
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            let top = canvas.height, bottom = 0, left = canvas.width, right = 0;
+
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const index = (y * canvas.width + x) * 4;
+                    const alpha = data[index + 3];
+
+                    if (alpha === 0) {
+                        if (y < top) top = y;
+                        if (y > bottom) bottom = y;
+                        if (x < left) left = x;
+                        if (x > right) right = x;
+                    }
+                }
+            }
+
+            const transparentWidth = right - left + 1;
+            const transparentHeight = bottom - top + 1;
+
+            const suggestedRatio = Math.max(
+                (canvas.width - transparentWidth) / transparentWidth,
+                (canvas.height - transparentHeight) / transparentHeight
+            );
+
+            console.log('Transparent Width:', transparentWidth);
+            console.log('Transparent Height:', transparentHeight);
+            console.log('Suggested Expansion Ratio:', suggestedRatio);
+        };
+
+        img.onerror = (err) => {
+            console.log("Image failed to load", err);
+        };
+
+        img.src = dataUrl;
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+async function getTransparent() {
+    await photoshop.action.batchPlay(
+        [
+            {
+                "_obj": "set",
+                "_target": [
+                    {
+                        "_property": "selection",
+                        "_ref": "channel"
+                    }
+                ],
+                "to": {
+                    "_enum": "channel",
+                    "_ref": "channel",
+                    "_value": "transparencyEnum"
+                }
+            },
+            {
+                "_obj": "inverse"
+            }
+        ], {}
+    );
+
+    const bounds = frame.selection.bounds;
+    console.log("left: " + bounds.left);
+    console.log("top: " + bounds.top);
+    console.log("right: " + bounds.right);
+    console.log("bottom: " + bounds.bottom);
+}
+
+
+
