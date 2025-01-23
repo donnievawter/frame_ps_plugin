@@ -24,67 +24,72 @@
     <p class="dialog-text">Please open the image file you want to frame.</p>
     <p class="dialog-text blue">Hit the "Step 2" button when you are finished.</p>
     <p class="dialog-text blue" id="step2finished">placeholder</p>
-    <div style="text-align: center;"></div>
+
     <button type="button" class="dialog-button" id="step2Button">Step 2</button>
     <button type="button" class="dialog-button" id="completedButton">Process</button>
     <button type="button" class="dialog-button cancel" id="cancelButton">Clear</button>
   </div>
 
-  </div>
+
 
   <dialog class="dialog" id="exampleDialog">
     <h1>Parameters</h1>
+    <h2>Mat</h2>
+    <p>
     <form method="dialog">
-      <p>
-        <label>Enter title:</label>
-        <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
-      </p>
-      <p>
-        <label>Chose Font:</label>
-        <select id="fontDropDown">
-          <option class="white" value="" selected>Choose Font</option>
+    </form> <label>Units</label><select id="units">
+      <option selected value="percent">Percent</option>
+      <option value="pixels">Pixels</option>
+    </select>
+    </p>
+    <p><label>Left</label>
+      <input class="dialog-input" type="text" id="mLeftInput" name="mLeftInput" placeholder="10">
+    </p>
+    <p><label>Right</label>
+      <input class="dialog-input" type="text" id="mRightInput" name="mRightInput" placeholder="10">
+    </p>
+    <p><label>Top</label>
+      <input class="dialog-input" type="text" id="mTopInput" name="mTopInput" placeholder="10">
+    </p>
+    <p><label>Bottom</label>
+      <input class="dialog-input" type="text" id="mBottomInput" name="mBottomInput" placeholder="15">
+    </p>
+    <p>
+      <label>Mat Color:</label>
+      <button class="dialog-button " type="button" id="chooseColor">Choose Color...</button>
+    <div id="colorSwatch" class="color-swatch"></div>
+    </p>
+    <h2>Title</h2>
+    <p>
+      <label>Enter title:</label>
+      <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
+    </p>
+    <p>
+      <label>Chose Font:</label>
+      <select id="fontDropDown">
+        <option class="white" value="" selected>Choose Font</option>
+      </select>
+      &nbsp;&nbsp;&nbsp;
+      <select id="fontSize">
 
+        <option class="white" value="" selected>Choose Size</option>
+        <option>6</option>
+        <option>12</option>
+        <option>18</option>
+        <option>24</option>
+        <option>36</option>
+        <option>48</option>
+        <option>60</option>
+        <option>72</option>
+        <option>96</option>
+        <option>120</option>
+      </select>
+    </p>
 
-        </select>
-        &nbsp;&nbsp;&nbsp;
-        <select id="fontSize">
-         
-          <option class="white" value="" selected>Choose Size</option>
-          <option>6</option>
-          <option>12</option>
-          <option>18</option>
-          <option>24</option>
-          <option>36</option>
-          <option>48</option>
-          <option>60</option>
-          <option>72</option>
-          <option>96</option>
-          <option>120</option>
-        </select>
-      </p>
-      <p>
-        <label>Title position offset:</label>
-        <input class="dialog-input" type="text" id="titlePositionOffset" name="titlePositionOffset"
-          placeholder="Enter title position offset">
-      </p>
-
-      <p>
-        <label>Bottom Padding:</label>
-        <input class="dialog-input" type="text" id="bottomPadding" name="bottomPadding" placeholder="100">
-      </p>
-      <p>
-        <label>Mat Color:</label>
-        <button class="dialog-button " type="button" id="chooseColor">Choose Color...</button>
-      <div id="colorSwatch" class="color-swatch"></div>
-      </p>
-      <p>
-        <label>Expansion ratio:</label>
-        <input class="dialog-input" type="text" id="expansionRatio" name="expansionRatio" placeholder="1.31">
-      </p>
-      <div class="button-container">
-        <button class="dialog-button" id="wearedone" type="submit">OK</button>
-        <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
-      </div>
+    <div class="button-container">
+      <button class="dialog-button" id="wearedone" type="submit">OK</button>
+      <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
+    </div>
     </form>
   </dialog>
 

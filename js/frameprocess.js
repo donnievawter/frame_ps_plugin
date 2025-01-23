@@ -1,22 +1,22 @@
 async function alertFunction(message) {
-    // console.log(`alertFunction: ${message}`);
+   
     await core.showAlert({ message });
 }
 
 async function processResults(userInput) {
     try {
         await photoshop.core.executeAsModal(async () => {
-            // console.log("starting processResults");
+        
             await processUserInput(userInput);
 
-            // await alertFunction("Files opened and checked");
+           
 
-            await logDocuments();
+         
             await makeActive(image);
-            // await flattenImage(image);
+          
             await renameBackGround();
             await setCanvas(image);
-            await moveImageUp(bottomPadding);
+            await moveImageUp();
 
             await createMatLayer(image);
 
@@ -28,7 +28,7 @@ async function processResults(userInput) {
 
             await copyFrameToImage();
 
-            await addTitle(title, titleOffset, bottomPadding);
+            await addTitle(title);
             await destroyVars();
 
         });
@@ -38,21 +38,20 @@ async function processResults(userInput) {
     }
 }
 async function maskAndStyleMat() {
-    // Select the "pic" layer
+   
     var imageLayer = image.layers.getByName("pic");
     setActiveLayer(image, "pic");
 
-    // Get dimensions of the "pic" layer
+   
     var imageBounds = imageLayer.bounds;
     var imageWidth = imageBounds.right - imageBounds.left;
     var imageHeight = imageBounds.bottom - imageBounds.top;
     var imageX = imageBounds.left;
     var imageY = imageBounds.top;
-    // console.log("width,height,x,y" + imageWidth + " " + imageHeight + " " + imageX + " " + imageY);
-    // Select the "mat color" layer
+   
     setActiveLayer(image, "mat color");
     let mLayer = image.layers.getByName("mat color");
-    // Create a selection based on the "pic" layer's dimensions
+   
     await photoshop.action.batchPlay(
         [
             {
@@ -85,7 +84,7 @@ async function maskAndStyleMat() {
             }
         ], {});
 
-    // Add layer mask to create the cutout (inverted)
+   
     await photoshop.action.batchPlay(
         [
             {
@@ -105,7 +104,7 @@ async function maskAndStyleMat() {
             }
         ], {});
 
-    // Clear the selection after creating the mask
+  
     await photoshop.action.batchPlay(
         [
             {
@@ -182,20 +181,27 @@ async function maskAndStyleMat() {
 
 }
 
-async function addTitle(text, offset, padding) {
+async function addTitle(text) {
     try {
-        // console.log("adding " + text + " to image");
+      
         await makeActive(image);
         let theLayer;
         const fudge = image.height / 15;
+        const bottomOfMat = image.height - finalBorderHeight;
+        const topOfMat = image.layers.getByName("pic").bounds.bottom;
+        const theY = (bottomOfMat + topOfMat) / 2;
+        const l=image.layers.getByName("pic").bounds.left;
+        const r=image.layers.getByName("pic").bounds.right;
+        const theX=(l+r)/2;
+       
         const pos = {
-            x: image.width / 2,
-            y: image.height - padding - offset - fudge,
+            x: theX,
+            y: theY,
             width: image.width / 5,
             height: image.height / 50
         }
-        const pixHeight =pos.height*50/1200* parseInt(fontSize,10);;
-console.log(pixHeight);
+        const pixHeight = pos.height * 50 / 1200 * parseInt(fontSize, 10);;
+     
         theLayer = await image.createTextLayer({
             name: "title",
             contents: text,
@@ -208,12 +214,11 @@ console.log(pixHeight);
         for (var i = 0; i < image.layers.length; i++) {
             if ((image.layers[i].name === text) || (image.layers[i].name === 'title')) {
                 sourceLayer = image.layers[i];
-                // console.log(i);
+               
                 break;
             }
         }
-        // console.log(sourceLayer);
-        // console.log(sourceLayer.name + " is being moved to the top of the layer stack");
+       
         sourceLayer.name = "title";
         await sourceLayer.move(image.layers[0], constants.ElementPlacement.PLACEBEFORE);
         //center it
@@ -227,9 +232,7 @@ console.log(pixHeight);
                             "_ref": "layer"
                         }
                     ],
-                    "layerID": [
-                        6
-                    ],
+                   
                     "makeVisible": false
                 },
                 {
@@ -262,42 +265,40 @@ console.log(pixHeight);
                 }
             ], {});
 
-        try {
-            let picBounds = image.layers.getByName("pic").bounds;
-            let titleBounds = image.layers.getByName("title").bounds;
-            // console.log("title offset ");
-            // console.log(titleBounds.bottom - picBounds.bottom);
-        } catch (er) {
-            console.log(er);
-        }
+       
 
     } catch (error) {
-         console.log(error);
+        console.log(error);
     }
 }
-async function moveImageUp(padding) {
+async function moveImageUp() {
     await makeActive(image);
 
     let layer;
 
     for (var i = 0; i < image.layers.length; i++) {
-        // console.log(i + " " + image.layers[i].name);
+       
         if (image.layers[i].name == "pic") {
             layer = await image.layers[i];
             break;
         }
     }
-    await layer.translate(0, -padding);
+    const curBottompos = layer.bounds.bottom;
+    const desiredBottompos = image.height -finalBorderHeight - parseInt((units == "pixels") ? mBottom : mBottom * layer.bounds.height / 100, 10);
+    const curleft = layer.bounds.left;
+    const desiredleftpos = finalBorderWidth + parseInt((units == "pixels") ? mLeft : mLeft * layer.bounds.width / 100, 10);
+
+      await layer.translate(desiredleftpos-curleft,  desiredBottompos-curBottompos);
 }
 async function fixPosition(lay, ws, hs) {
 
     const hOffset = frame.layers[0].bounds.left * hs / 100;
     const vOffset = frame.layers[0].bounds.top * ws / 100;
     await lay.translate(hOffset - lay.bounds.left, vOffset - lay.bounds.top);
-    // console.log("bounds after fix", lay.bounds);
+   
 }
 async function setActiveLayer(doc, layerName) {
-    // console.log("setting active layer to " + layerName + " in " + doc.name);
+   
     app.activeDocument = doc;
     // Set the active layer using batchPlay
     await photoshop.action.batchPlay(
@@ -318,7 +319,7 @@ async function setActiveLayer(doc, layerName) {
 async function useLayerEffects(doc, layerName, status) {
     await setActiveLayer(doc, layerName);
     const showHide = status ? "show" : "hide";
-    // console.log("setting layerEffect to " + showHide + " for " + layerName + " in " + doc.name);
+   
 
     await photoshop.action.batchPlay(
         [
@@ -342,28 +343,27 @@ async function useLayerEffects(doc, layerName, status) {
 
 }
 async function copyFrameToImage() {
-    // console.log("copy frame to image");
+   
     const theTop = await image.layers.length;
     const theHeightScale = 100 * image.height / frame.height;
     const theWidthScale = 100 * image.width / frame.width;
-    // console.log(theHeightScale);
-    // console.log(theWidthScale);
+    
     let anchorPos = constants.AnchorPosition
+    frame.selection.deselect();
     await frame.layers[0].duplicate(image, constants.ElementPlacement.PLACEATEND, "frame");
     //turn layer effects back on
     await useLayerEffects(frame, frame.activeLayers[0].name, true);
-    // console.log(app.activeDocument.name);
+   
     await useLayerEffects(image, "frame", true);
-    // console.log(app.activeDocument.name);
-    // console.log(app.activeDocument.activeLayers[0].name + " is currently activce");
-    for (var i = 0; i < image.layers.length; i++) {
-        // console.log(image.layers[i].name);
-    }
+   
+   
 
+    image.selection.deselect();
     const layer = await image.layers.getByName("frame")
-    // console.log("after copy " + layer.name + " " + layer.bounds.width);
-    // console.log(layer.bounds);
-    // console.log(layer.name + " is being scaled to " + theWidthScale + "% width and " + theHeightScale + "% height");
+   
+    layer.translate((image.width - layer.bounds.width) / 2, (image.height - layer.bounds.height) / 2);
+
+
     await photoshop.action.batchPlay(
         [
             {
@@ -393,17 +393,7 @@ async function copyFrameToImage() {
             }
         ], {});
 
-    //  await layer.scale(theWidthScale, theHeightScale, anchorPos.MIDDLECENTER);
-    // console.log("after first scale " + layer.name + " " + layer.bounds.width);
-    // console.log(layer.bounds);
-    //we need to account for fact that with layer effects our positioning is wrong
-    //await layer.translate(-layer.bounds.left, -layer.bounds.top);
-    await fixPosition(layer, theWidthScale, theHeightScale);
-    // console.log(layer.name);
-    // console.log(layer.bounds);
-
-    // console.log("width: " + image.width + " height: " + image.height);
-    // console.log("starting faff");
+   
     let sourceLayer, destLayer;
     for (var i = 0; i < image.layers.length; i++) {
         if (image.layers[i].name === 'pic') {
@@ -413,15 +403,14 @@ async function copyFrameToImage() {
             destLayer = image.layers[i];
         }
     }
-    // console.log(sourceLayer);
-    // console.log(destLayer);
+   
 
     await sourceLayer.move(destLayer, constants.ElementPlacement.PLACEAFTER);
     await useLayerEffects(image, "frame", false);
     await image.trim(constants.TrimType.TRANSPARENT);
     await useLayerEffects(image, "frame", true);
 
-    // console.log("finished frame");
+   
 
 }
 async function fillMatandMoveToBottom() {
@@ -459,12 +448,53 @@ async function fillMatandMoveToBottom() {
 }
 
 async function createMatLayer(im) {
+
+
     await im.createLayer(constants.LayerKind.NORMAL, { name: "mat color", opacity: 100, blendMode: constants.BlendMode.NORMAL });
 }
 async function setCanvas(doc) {
-    let width = await doc.width;
-    let height = await doc.height;
-    await doc.resizeCanvas(width * expansionRatio, height * expansionRatio);
+
+    const width = await doc.width;
+    const height = await doc.height;
+    const framewindowWidth = transparentBounds.width;
+    const framewindowHeight = transparentBounds.height;
+    const framewindowVerticalBorder = (frame.width - framewindowWidth) / 2;
+    const framewindowHorizontalBorder = (frame.height - framewindowHeight) / 2;
+    const matLeftPixels = parseInt((units === "pixels") ? mLeft : mLeft * width / 100, 10);
+    const matRightPixels = parseInt((units === "pixels") ? mRight : mRight * width / 100, 10);
+    const matTopPixels = parseInt((units === "pixels") ? mTop : mTop * height / 100, 10);
+    const matBottomPixels = parseInt((units === "pixels") ? mBottom : mBottom * height / 100, 10);
+    const newTransparentWidth = width + matLeftPixels + matRightPixels;
+    const sfw = newTransparentWidth / framewindowWidth;
+
+    const newCanvasWidth = newTransparentWidth + 2 * sfw * framewindowVerticalBorder;
+    const newTransparentHeight = height + matTopPixels + matBottomPixels;
+    const sfh = newTransparentHeight / framewindowHeight;
+    finalBorderHeight = sfh * framewindowHorizontalBorder;
+    finalBorderWidth = sfw * framewindowVerticalBorder;
+
+    const newCanvasHeight = newTransparentHeight + 2 * sfh * framewindowHorizontalBorder;
+    const out = {
+        "width": width,
+        "height": height,
+        "framewindowWidth": framewindowWidth,
+        "framewindowHeight": framewindowHeight,
+        "framewindowVerticalBorder": framewindowVerticalBorder,
+        "framewindowHorizontalBorder": framewindowHorizontalBorder,
+        "matLeftPixels": matLeftPixels,
+        "matRightPixels": matRightPixels,
+        "matTopPixels": matTopPixels,
+        "matBottomPixels": matBottomPixels,
+        "newCanvasWidth": newCanvasWidth,
+        "newCanvasHeight": newCanvasHeight
+    }
+   
+
+
+
+
+    await doc.resizeCanvas(newCanvasWidth, newCanvasHeight);
+   
 }
 
 async function renameBackGround(newName) {
@@ -494,8 +524,7 @@ async function renameBackGround(newName) {
 }
 
 async function setMatColor(rgbFloat) {
-    // console.log("setting mat color");
-    // console.log(rgbFloat);
+    
     const greenValue = rgbFloat.grain !== undefined ? rgbFloat.grain : rgbFloat.green;
     const SolidColor = require("photoshop").app.SolidColor;
     const col = new SolidColor();
@@ -508,18 +537,20 @@ async function makeActive(doc) {
     app.activeDocument = doc;
 }
 async function processUserInput(userInput) {
-    // console.log(userInput);
+   
     title = userInput.title;
-    titleOffset = userInput.titleOffset;
-    bottomPadding = userInput.bottomPadding;
+
     matColor = userInput.matColor;
     matFloat = userInput.matFloat;
-    expansionRatio = userInput.expansionRatio;
-    fontChoice=userInput.fontChoice;
-    console.log(fontChoice);
-       // console.log("inputs generated");
-    // console.log(matFloat);
-     
+
+    fontChoice = userInput.fontChoice;
+    mLeft = userInput.mLeft;
+    mTop = userInput.mTop;
+    mBottom = userInput.mBottom;
+    mRight = userInput.mRight;
+    units = userInput.units;
+   
+
 }
 
 async function selectFrame() {
@@ -530,7 +561,11 @@ async function selectFrame() {
     );
 }
 async function destroyVars() {
-    await calculateFrameThickness(frame);
+    units = null;
+    mTop = null;
+    mRight = null;
+    mBottom = null;
+    mLeft = null;
     frame = null;
     image = null;
     title = null;
@@ -539,102 +574,25 @@ async function destroyVars() {
     matColor = null;
     expansionRatio = null;
     matFloat = null;
-    fontChoice=null;
-    fontSize=null
-  document.getElementById('step1finished').style.display = 'none';
-  document.getElementById('step2finished').style.display = 'none';
-  document.getElementById('completedButton').style.display='none';
+    fontChoice = null;
+    fontSize = null
+    transparentBounds = null;
+    document.getElementById('step1finished').style.display = 'none';
+    document.getElementById('step2finished').style.display = 'none';
+    document.getElementById('completedButton').style.display = 'none';
+    finalBorderHeight=null;
+    finalBorderWidth=null;
 
 }
-async function logDocuments() {
 
-    // console.log(frame);
-    // console.log(image);
-    // console.log(frame.path);
-    // console.log(frame.name);
-    // console.log(image.path);
-    // console.log(image.name);
-    // console.log("files should be open");
-}
 async function flattenImage(im) {
     app.activeDocument = image;
-    //await photoshop.action.batchPlay(
-    //    [
-    //        { "_obj": "flattenImage" }
-    //    ], {}
-    //);
+   
     await app.activeDocument.flatten();
 
-    // console.log(app.activeDocument.name + " " + app.activeDocument.layers.length);
+   
 }
-async function calculateFrameThickness(theFrame) {
-    try {
-        const document = theFrame;
 
-        // Export the document to a temporary PNG file
-        const tempFolder = await fs.getTemporaryFolder();
-        const tempFile = await tempFolder.createFile("temp-layer.png", { overwrite: true });
-        await document.saveAs.png(tempFile, false);
-
-        // Read the file as a base64 data URL
-        const fileData = await tempFile.read({ format: storage.formats.binary });
-        
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(fileData)));
-        const dataUrl = `data:image/png;base64,${base64String}`;
-
-        const img = new Image();
-
-        img.onload = () => {
-            console.log("Image loaded successfully");
-
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const context = canvas.getContext('2d');
-            context.drawImage(img, 0, 0);
-
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-            let top = canvas.height, bottom = 0, left = canvas.width, right = 0;
-
-            for (let y = 0; y < canvas.height; y++) {
-                for (let x = 0; x < canvas.width; x++) {
-                    const index = (y * canvas.width + x) * 4;
-                    const alpha = data[index + 3];
-
-                    if (alpha === 0) {
-                        if (y < top) top = y;
-                        if (y > bottom) bottom = y;
-                        if (x < left) left = x;
-                        if (x > right) right = x;
-                    }
-                }
-            }
-
-            const transparentWidth = right - left + 1;
-            const transparentHeight = bottom - top + 1;
-
-            const suggestedRatio = Math.max(
-                (canvas.width - transparentWidth) / transparentWidth,
-                (canvas.height - transparentHeight) / transparentHeight
-            );
-
-            console.log('Transparent Width:', transparentWidth);
-            console.log('Transparent Height:', transparentHeight);
-            console.log('Suggested Expansion Ratio:', suggestedRatio);
-        };
-
-        img.onerror = (err) => {
-            console.log("Image failed to load", err);
-        };
-
-        img.src = dataUrl;
-
-    } catch (e) {
-        console.log(e);
-    }
-}
 async function getTransparent() {
     await photoshop.action.batchPlay(
         [
@@ -659,10 +617,10 @@ async function getTransparent() {
     );
 
     const bounds = frame.selection.bounds;
-    console.log("left: " + bounds.left);
-    console.log("top: " + bounds.top);
-    console.log("right: " + bounds.right);
-    console.log("bottom: " + bounds.bottom);
+   
+
+    frame.selection.deselect();
+    return bounds;
 }
 
 
