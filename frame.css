@@ -12,26 +12,17 @@ body {
     margin: 0;
 }
 
-
-
-
-
 /* CSS for dropdown width and font color */
 #fontDropdown {
-    width: 200px;
-    /* Adjust the width as needed */
-    color: #ffffff;
-    /* Change to white */
-    background-color: #333333;
-    /* Add a background color */
+    width: 200px; /* Adjust the width as needed */
+    color: #ffffff; /* Change to white */
+    background-color: #333333; /* Add a background color */
 }
 
 /* Ensure all options inherit the font color */
 #fontDropdown option {
-    color: #ffffff;
-    /* Change to white */
-    background-color: #333333;
-    /* Ensure background color */
+    color: #ffffff; /* Change to white */
+    background-color: #333333; /* Ensure background color */
 }
 
 h1 {
@@ -65,8 +56,7 @@ label {
 
 .dialog-input {
     display: block;
-    width: calc(100% - 20px);
-    /* Full width minus padding */
+    width: calc(100% - 20px); /* Full width minus padding */
     margin: 10px auto;
     padding: 10px;
     font-size: 16px;
@@ -84,19 +74,15 @@ label {
 
 .dialog {
     text-align: center;
-   /* border: 1px solid #ccc;*/
     padding: 20px;
     width: 500px;
     margin: 20px auto;
     display: flex;
-    flex-direction: column;
-    /* Ensure proper flex alignment */
+    flex-direction: column; /* Ensure proper flex alignment */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    /* Rounded corners for the dialog */
+    border-radius: 8px; /* Rounded corners for the dialog */
     font-family: Arial, sans-serif;
-    padding-right: 20px;
-    /* Add padding to the right edge */
+    padding-right: 20px; /* Add padding to the right edge */
 }
 
 /* Common text styles */
@@ -121,23 +107,19 @@ label {
     background: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
-    /* Rounded corners for buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
     cursor: pointer;
     font-size: 16px;
     font-family: Arial, sans-serif;
-    transition: background 0.3s, transform 0.1s;
-    /* Smooth transitions */
+    transition: background 0.3s, transform 0.1s; /* Smooth transitions */
 }
 
 .dialog-button:hover {
-    background: #0056b3;
-    /* Darker blue on hover */
+    background: #0056b3; /* Darker blue on hover */
 }
 
 .dialog-button:active {
-    transform: scale(0.95);
-    /* Slightly shrink on click */
+    transform: scale(0.95); /* Slightly shrink on click */
 }
 
 .dialog-button.cancel {
@@ -145,13 +127,11 @@ label {
 }
 
 .dialog-button.cancel:hover {
-    background: #c82333;
-    /* Darker red on hover */
+    background: #c82333; /* Darker red on hover */
 }
 
 .dialog-button.cancel:active {
-    transform: scale(0.95);
-    /* Slightly shrink on click */
+    transform: scale(0.95); /* Slightly shrink on click */
 }
 
 .color-swatch {
@@ -163,8 +143,22 @@ label {
     vertical-align: middle;
 }
 
-#step2finished,
-#step1finished {
+#step2finished, #step1finished {
     display: none;
     color: rgb(101, 194, 101);
+}
+
+/* Flex container for label, button, and swatch alignment */
+.flex-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+}
+
+.flex-row label {
+    margin-right: 10px;
+}
+
+.flex-row button {
+    margin-right: 10px;
 }

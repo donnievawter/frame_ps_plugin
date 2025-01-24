@@ -1,7 +1,7 @@
 const { storage } = require('uxp');
 const photoshop = require('photoshop');
 const { constants } = require("photoshop");
-let dialog, rgbFloat, fontChoice, fontSize,units,mTop,mLeft,mRight,mBottom,finalBorderWidth,finalBorderHeight;
+let dialog, rgbFloat, fontChoice, fontSize,units,mTop,mLeft,mRight,mBottom,finalBorderWidth,finalBorderHeight,rgbFloatTitle,rgbColorTitle;
 async function buildFontDropdown() {
   //lets also set size
   const ol = document.getElementById('fontSize').options;
@@ -121,9 +121,13 @@ document.getElementById('completedButton').addEventListener('click', async () =>
         document.getElementById('units').value = savedPreferences.units || 'percentage';
        
         document.getElementById('colorSwatch').style.backgroundColor = savedPreferences.matColor || '`rgb(255, 255, 255)`';
+       document.getElementById('colorSwatchTitle').style.backgroundColor = savedPreferences.titleColor || '`rgb(255, 255, 255)`';
        
         rgbColor = savedPreferences.matColor || '`rgb(255, 255, 255)`';
         rgbFloat = savedPreferences.matFloat || { red: 255, grain: 255, blue: 255 };
+        rgbColorTitle = savedPreferences.titleColor || '`rgb(255, 255, 255)`';
+        rgbFloatTitle = savedPreferences.titleFloat || { red: 255, grain: 255, blue: 255 };
+ 
         fontChoice = savedPreferences.fontChoice;
         fontSize = savedPreferences.fontSize || 24;
       } else {
@@ -134,7 +138,11 @@ document.getElementById('completedButton').addEventListener('click', async () =>
         document.getElementById('units').value = 'percentage';
 
         document.getElementById('titleInput').value = '';
-        
+        document.getElementById('colorSwatchTitle').style.backgroundColor = '`rgb(255, 255, 255)`';
+       
+        rgbColorTitle = '`rgb(255, 255, 255)`';
+        rgbFloatTitle = { red: 255, grain: 255, blue: 255 };
+       
         document.getElementById('colorSwatch').style.backgroundColor = '`rgb(255, 255, 255)`';
        
         rgbColor = '`rgb(255, 255, 255)`';
@@ -197,6 +205,27 @@ document.getElementById('chooseColor').addEventListener('click', async () => {
     }
   })
 });
+document.getElementById('chooseColorTitle').addEventListener('click', async () => {
+  await photoshop.core.executeAsModal(async () => {
+    try {
+      // Open color picker
+      const openPicker = {
+        _target: { _ref: "application" },
+        _obj: "showColorPicker"
+      };
+      const res = await photoshop.action.batchPlay([openPicker], {});
+    
+      rgbFloatTitle = res[0].RGBFloatColor;
+    
+      // Use 'grain' if it exists, otherwise fall back to 'green'
+      const greenValue = rgbFloatTitle.grain !== undefined ? rgbFloatTitle.grain : rgbFloatTitle.green;
+      rgbColorTitle = `rgb(${rgbFloatTitle.red}, ${greenValue}, ${rgbFloatTitle.blue})`;
+      document.getElementById('colorSwatchTitle').style.backgroundColor = rgbColorTitle;
+    } catch (error) {
+      console.error("Error selecting color:", error);
+    }
+  })
+});
 
 async function showPhotoshop() {
   await photoshop.core.executeAsModal(async () => {
@@ -228,6 +257,8 @@ document.getElementById('wearedone').addEventListener('click', async () => {
         title: document.getElementById('titleInput').value,
         matColor: rgbColor,
         matFloat: rgbFloat,
+        titleColor: rgbColorTitle,
+        titleColorFloat: rgbFloatTitle,
         fontChoice: fontChoice,
         fontSize: document.getElementById('fontSize').value,
         mLeft: document.getElementById('mLeftInput').value,

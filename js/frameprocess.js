@@ -1,19 +1,19 @@
 async function alertFunction(message) {
-   
+
     await core.showAlert({ message });
 }
 
 async function processResults(userInput) {
     try {
         await photoshop.core.executeAsModal(async () => {
-        
+
             await processUserInput(userInput);
 
-           
 
-         
+
+
             await makeActive(image);
-          
+
             await renameBackGround();
             await setCanvas(image);
             await moveImageUp();
@@ -38,20 +38,20 @@ async function processResults(userInput) {
     }
 }
 async function maskAndStyleMat() {
-   
+
     var imageLayer = image.layers.getByName("pic");
     setActiveLayer(image, "pic");
 
-   
+
     var imageBounds = imageLayer.bounds;
     var imageWidth = imageBounds.right - imageBounds.left;
     var imageHeight = imageBounds.bottom - imageBounds.top;
     var imageX = imageBounds.left;
     var imageY = imageBounds.top;
-   
+
     setActiveLayer(image, "mat color");
     let mLayer = image.layers.getByName("mat color");
-   
+
     await photoshop.action.batchPlay(
         [
             {
@@ -84,7 +84,7 @@ async function maskAndStyleMat() {
             }
         ], {});
 
-   
+
     await photoshop.action.batchPlay(
         [
             {
@@ -104,7 +104,7 @@ async function maskAndStyleMat() {
             }
         ], {});
 
-  
+
     await photoshop.action.batchPlay(
         [
             {
@@ -183,17 +183,17 @@ async function maskAndStyleMat() {
 
 async function addTitle(text) {
     try {
-      
+
         await makeActive(image);
         let theLayer;
         const fudge = image.height / 15;
         const bottomOfMat = image.height - finalBorderHeight;
         const topOfMat = image.layers.getByName("pic").bounds.bottom;
         const theY = (bottomOfMat + topOfMat) / 2;
-        const l=image.layers.getByName("pic").bounds.left;
-        const r=image.layers.getByName("pic").bounds.right;
-        const theX=(l+r)/2;
-       
+        const l = image.layers.getByName("pic").bounds.left;
+        const r = image.layers.getByName("pic").bounds.right;
+        const theX = (l + r) / 2;
+
         const pos = {
             x: theX,
             y: theY,
@@ -201,24 +201,55 @@ async function addTitle(text) {
             height: image.height / 50
         }
         const pixHeight = pos.height * 50 / 1200 * parseInt(fontSize, 10);;
-     
-        theLayer = await image.createTextLayer({
+      
+        const op = {
             name: "title",
             contents: text,
             fontName: fontChoice[0],
             fontSize: pixHeight,
             position: pos,
+             
             justification: constants.Justification.CENTER
-        });
+        };
+       
+        theLayer = await image.createTextLayer(op);
+        //Setting the color
+         await photoshop.action.batchPlay(
+[
+   {
+      _obj: "set",
+      _target: [
+         {
+            _ref: "property",
+            _property: "textStyle"
+         },
+         {
+            _ref: "textLayer",
+            _enum: "ordinal",
+            _value: "targetEnum"
+         }
+      ],
+      to: {
+         _obj: "textStyle",
+         color:rgbFloatTitle
+      },
+      _options: {
+         dialogOptions: "dontDisplay"
+      }
+   }
+],{});
+
+
+
         let sourceLayer;
         for (var i = 0; i < image.layers.length; i++) {
             if ((image.layers[i].name === text) || (image.layers[i].name === 'title')) {
                 sourceLayer = image.layers[i];
-               
+
                 break;
             }
         }
-       
+
         sourceLayer.name = "title";
         await sourceLayer.move(image.layers[0], constants.ElementPlacement.PLACEBEFORE);
         //center it
@@ -232,7 +263,7 @@ async function addTitle(text) {
                             "_ref": "layer"
                         }
                     ],
-                   
+
                     "makeVisible": false
                 },
                 {
@@ -265,7 +296,7 @@ async function addTitle(text) {
                 }
             ], {});
 
-       
+
 
     } catch (error) {
         console.log(error);
@@ -277,28 +308,28 @@ async function moveImageUp() {
     let layer;
 
     for (var i = 0; i < image.layers.length; i++) {
-       
+
         if (image.layers[i].name == "pic") {
             layer = await image.layers[i];
             break;
         }
     }
     const curBottompos = layer.bounds.bottom;
-    const desiredBottompos = image.height -finalBorderHeight - parseInt((units == "pixels") ? mBottom : mBottom * layer.bounds.height / 100, 10);
+    const desiredBottompos = image.height - finalBorderHeight - parseInt((units == "pixels") ? mBottom : mBottom * layer.bounds.height / 100, 10);
     const curleft = layer.bounds.left;
     const desiredleftpos = finalBorderWidth + parseInt((units == "pixels") ? mLeft : mLeft * layer.bounds.width / 100, 10);
 
-      await layer.translate(desiredleftpos-curleft,  desiredBottompos-curBottompos);
+    await layer.translate(desiredleftpos - curleft, desiredBottompos - curBottompos);
 }
 async function fixPosition(lay, ws, hs) {
 
     const hOffset = frame.layers[0].bounds.left * hs / 100;
     const vOffset = frame.layers[0].bounds.top * ws / 100;
     await lay.translate(hOffset - lay.bounds.left, vOffset - lay.bounds.top);
-   
+
 }
 async function setActiveLayer(doc, layerName) {
-   
+
     app.activeDocument = doc;
     // Set the active layer using batchPlay
     await photoshop.action.batchPlay(
@@ -319,7 +350,7 @@ async function setActiveLayer(doc, layerName) {
 async function useLayerEffects(doc, layerName, status) {
     await setActiveLayer(doc, layerName);
     const showHide = status ? "show" : "hide";
-   
+
 
     await photoshop.action.batchPlay(
         [
@@ -343,24 +374,24 @@ async function useLayerEffects(doc, layerName, status) {
 
 }
 async function copyFrameToImage() {
-   
+
     const theTop = await image.layers.length;
     const theHeightScale = 100 * image.height / frame.height;
     const theWidthScale = 100 * image.width / frame.width;
-    
+
     let anchorPos = constants.AnchorPosition
     frame.selection.deselect();
     await frame.layers[0].duplicate(image, constants.ElementPlacement.PLACEATEND, "frame");
     //turn layer effects back on
     await useLayerEffects(frame, frame.activeLayers[0].name, true);
-   
+
     await useLayerEffects(image, "frame", true);
-   
-   
+
+
 
     image.selection.deselect();
     const layer = await image.layers.getByName("frame")
-   
+
     layer.translate((image.width - layer.bounds.width) / 2, (image.height - layer.bounds.height) / 2);
 
 
@@ -393,7 +424,7 @@ async function copyFrameToImage() {
             }
         ], {});
 
-   
+
     let sourceLayer, destLayer;
     for (var i = 0; i < image.layers.length; i++) {
         if (image.layers[i].name === 'pic') {
@@ -403,14 +434,14 @@ async function copyFrameToImage() {
             destLayer = image.layers[i];
         }
     }
-   
+
 
     await sourceLayer.move(destLayer, constants.ElementPlacement.PLACEAFTER);
     await useLayerEffects(image, "frame", false);
     await image.trim(constants.TrimType.TRANSPARENT);
     await useLayerEffects(image, "frame", true);
 
-   
+
 
 }
 async function fillMatandMoveToBottom() {
@@ -488,13 +519,13 @@ async function setCanvas(doc) {
         "newCanvasWidth": newCanvasWidth,
         "newCanvasHeight": newCanvasHeight
     }
-   
+
 
 
 
 
     await doc.resizeCanvas(newCanvasWidth, newCanvasHeight);
-   
+
 }
 
 async function renameBackGround(newName) {
@@ -524,7 +555,7 @@ async function renameBackGround(newName) {
 }
 
 async function setMatColor(rgbFloat) {
-    
+
     const greenValue = rgbFloat.grain !== undefined ? rgbFloat.grain : rgbFloat.green;
     const SolidColor = require("photoshop").app.SolidColor;
     const col = new SolidColor();
@@ -533,15 +564,27 @@ async function setMatColor(rgbFloat) {
     col.rgb.blue = rgbFloat.blue;
     app.foregroundColor = col;
 }
+async function setTitleColor(rgbFloatTitle) {
+
+    const greenValue = rgbFloatTitle.grain !== undefined ? rgbFloatTitle.grain : rgbFloatTitle.green;
+    const SolidColor = require("photoshop").app.SolidColor;
+    const col = new SolidColor();
+    col.rgb.red = rgbFloatTitle.red;
+    col.rgb.green = greenValue;
+    col.rgb.blue = rgbFloatTitle.blue;
+    return [col.rgb.red, col.rgb.green, col.rgb.blue];
+}
 async function makeActive(doc) {
     app.activeDocument = doc;
 }
 async function processUserInput(userInput) {
-   
+
     title = userInput.title;
 
     matColor = userInput.matColor;
     matFloat = userInput.matFloat;
+    titleColor = userInput.matColor;
+    titleFloat = userInput.matFloat;
 
     fontChoice = userInput.fontChoice;
     mLeft = userInput.mLeft;
@@ -549,7 +592,7 @@ async function processUserInput(userInput) {
     mBottom = userInput.mBottom;
     mRight = userInput.mRight;
     units = userInput.units;
-   
+
 
 }
 
@@ -575,22 +618,25 @@ async function destroyVars() {
     expansionRatio = null;
     matFloat = null;
     fontChoice = null;
-    fontSize = null
+    fontSize = null;
+    titleFloat = null;
+    titleColor = null;
+
     transparentBounds = null;
     document.getElementById('step1finished').style.display = 'none';
     document.getElementById('step2finished').style.display = 'none';
     document.getElementById('completedButton').style.display = 'none';
-    finalBorderHeight=null;
-    finalBorderWidth=null;
+    finalBorderHeight = null;
+    finalBorderWidth = null;
 
 }
 
 async function flattenImage(im) {
     app.activeDocument = image;
-   
+
     await app.activeDocument.flatten();
 
-   
+
 }
 
 async function getTransparent() {
@@ -617,7 +663,7 @@ async function getTransparent() {
     );
 
     const bounds = frame.selection.bounds;
-   
+
 
     frame.selection.deselect();
     return bounds;

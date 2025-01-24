@@ -31,14 +31,14 @@ This project is designed to add virtual frames to an image in Photoshop.
   You will be presented with this panel  
   
    ![Choose parameters](assets/parameters.png)
-1. Choose the title of your image. It may be blank.
-2. Choose the font and size for the title.
-2. The title offset position moves the title up or down. 40 is a good starting point
-3. Bottom padding moves the image file up or down within the mat. 100 is a good starting point if you have a title. 0 will leave it centered vertically
-4. Choose Color opens a color picker to choose the color of the mat
-5. Expansion ratio determines the width of the mat. If you choose 1, you will have no mat and the frame will crop your imagae. 1.31 is a good starting point.
-6. Choose OK to process the image, Cancel to return to the main panel
-7. All fields are sticky so will be the same the next time you use the process.
+1. There are two sections to the panel- the mat and the title
+2. For the mat you choose the size for the four sides.
+3. Choose your units - pixels or percent. Percent is a percentage of the image size.
+4. Choose the mat color with the Choose Color button which opens a color picker.
+5. **IT IS IMPORTANT TO CLOSE THE COLOR PICKER TO APPLY YOUR CHOICE**
+6. For the title you choose the text, the font using a dropdown, the color using a dropdown, and the color using a color picker.
+7. When you are done click Ok or bailout with Cancel
+8. The screen may show the image in various states while building the result. Don't panic if it looks strange.
 
 
 ## Working with the included Frame
