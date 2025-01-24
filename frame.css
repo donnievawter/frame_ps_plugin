@@ -10,6 +10,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden; /* Prevent body scroll */
 }
 
 /* CSS for dropdown width and font color */
@@ -75,7 +76,11 @@ label {
 .dialog {
     text-align: center;
     padding: 20px;
-    width: 500px;
+    width: 90%;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 80vh;
+    overflow: auto; /* Add scroll bars if content overflows */
     margin: 20px auto;
     display: flex;
     flex-direction: column; /* Ensure proper flex alignment */
@@ -83,6 +88,7 @@ label {
     border-radius: 8px; /* Rounded corners for the dialog */
     font-family: Arial, sans-serif;
     padding-right: 20px; /* Add padding to the right edge */
+    box-sizing: border-box; /* Ensure padding is included in width and height */
 }
 
 /* Common text styles */
@@ -102,7 +108,7 @@ label {
 /* Common button styles */
 .dialog-button {
     display: block;
-    margin: 30px 5px;
+    margin: 10px 5px; /* Adjusted margin for better spacing */
     padding: 10px 20px;
     background: #007bff;
     color: #fff;
@@ -161,4 +167,22 @@ label {
 
 .flex-row button {
     margin-right: 10px;
+}
+
+/* Flex-row adjustments for input fields */
+.flex-row input {
+    flex: 1; /* Make sure the input takes available space */
+    margin-right: 20px; /* Add space between input and next label */
+}
+
+/* Small input adjustments */
+.small-input {
+    width: 50px; /* Adjust the width as needed */
+}
+
+/* Button container styling for alignment */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Add some margin to separate from other elements */
 }
