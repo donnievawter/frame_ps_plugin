@@ -4,23 +4,25 @@ Automated generation of a virtual frame for an image
 This project is designed to add virtual frames to an image in Photoshop.
 
 ### Some of the features:
+* Create the base frame with Generative Fill or use your own.
 * Works with arbitrary aspect ratios
 * Adds text field for the title
 * Adds a mat with a user chosen color
 
 ## Installation:
   This is a photoshop plug-in and you need the ccx file.
-  This will be updated as I progress
+  It will be available in the Photoshop Marketplace or if you fork the code you can generate your own
 
 ## Useage:
-    After installation you got to Plugins>Add Frame>Add Frame
+    After installation you go to Plugins>Add Frame>Add Frame
 
 ## Setting the items:
   You will be presented with this panel  
   
    ![Choose Files](assets/choosefiles.png)
+1. Create the base frame or choose a file. To create a frame [See here](#Creating-a-Base-Frame)  
 1. Choose the frame file and make it active.
-2. Press "Step 1" button.
+2. {#step1}Press "Step 1" button.
 3. Note that any layer effects on the frame will be disabled. This may change the appearance of the frame. Don't worry. They will be re-enabled after processing.
 3. Open the image you want to frame
 4. Press "Step 2" button
@@ -54,3 +56,12 @@ The generated file will have the following layers:
 4. mat color: filed with the color you chose.
 
 You can alter these layers as you like. Changing the font, size and location of the title, the color of the mat, etc. You can also change the frame color by editing the layer properties of "frame".
+
+## Creating a Base Frame
+![Create](assets/createframe.png)
+1. Fill out the dimensions of the frame in pixels. You should specify something roughly the size of your images to avoid pixelization when the frame is stretched around the image.
+2. Choose the border widths.
+3. Generative Fill is used to create the borders. Leave the prompt blank if you want a solid black border.
+4. If you choose editable then the build process will pause while you interact with generative fill. Otherwise it will just take the first option.
+5. Click Create Frame to generate the frame.
+6. [Go to this step](#step1)
