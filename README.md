@@ -9,14 +9,15 @@ This project is designed to add virtual frames to an image in Photoshop.
 * Adds text field for the title
 * Adds a mat with a user chosen color
 
-## Installation:
+## Installation
   This is a photoshop plug-in and you need the ccx file.
   It will be available in the Photoshop Marketplace or if you fork the code you can generate your own
 
-## Useage:
+## Useage
     After installation you go to Plugins>Add Frame>Add Frame
 
-## Setting the items:
+## Setting the items
+
   You will be presented with this panel  
   
    ![Choose Files](assets/choosefiles.png)
@@ -29,7 +30,7 @@ This project is designed to add virtual frames to an image in Photoshop.
 5. Press the "Process" button
 6. Press the "Clear" button if you want to change files.
 
-## Setting the parameters:
+## Setting the parameters
   You will be presented with this panel  
   
    ![Choose parameters](assets/parameters.png)
@@ -64,4 +65,4 @@ You can alter these layers as you like. Changing the font, size and location of 
 3. Generative Fill is used to create the borders. Leave the prompt blank if you want a solid black border.
 4. If you choose editable then the build process will pause while you interact with generative fill. Otherwise it will just take the first option.
 5. Click Create Frame to generate the frame.
-6. [Go to step 3](#setting-the-items_)
+6. [Go to step 3](#setting-the-items)
