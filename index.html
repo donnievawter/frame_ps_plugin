@@ -2,141 +2,146 @@
 <html lang="en">
 
 <head>
-  <title>Add Frame</title>
-  <script src="js/frameui.js"></script>
-  <script src="js/frameprocess.js"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Initialize Dialog</title>
-  <link rel="stylesheet" href="frame.css"> <!-- Reference your common stylesheet -->
+    <title>Add Frame</title>
+    <script src="js/frameui.js"></script>
+    <script src="js/frameprocess.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initialize Dialog</title>
+    <link rel="stylesheet" href="frame.css"> <!-- Reference your common stylesheet -->
 </head>
 
 <body>
 
-  <div class="dialoghtml" id="initializeDialog">
-    <h1>Choose your files</h1>
-     <button type="button" class="dialog-button" id="createFrameButton">Create Frame</button>
-    <p class="dialog-text">Or</p>
-    <p class="dialog-text">Please open the image file you want to use as a frame.</p>
-    <p class="dialog-text blue">Hit the "Step 1" button when you are finished.</p>
-    <p class="dialog-text blue" id="step1finished">placeholder</p>
-    <button type="button" class="dialog-button" id="step1Button">Step 1</button>
-    <p class="dialog-text">Please open the image file you want to frame.</p>
-    <p class="dialog-text blue">Hit the "Step 2" button when you are finished.</p>
-    <p class="dialog-text blue" id="step2finished">placeholder</p>
+    <div class="dialoghtml" id="initializeDialog">
+        <h1>Choose your files</h1>
+        <button type="button" class="dialog-button" id="createFrameButton">Create Frame</button>
+        <p class="dialog-text">Or</p>
+        <p class="dialog-text">Please open the image file you want to use as a frame.</p>
+        <p class="dialog-text blue">Hit the "Step 1" button when you are finished.</p>
+        <p class="dialog-text blue" id="step1finished">placeholder</p>
+        <button type="button" class="dialog-button" id="step1Button">Step 1</button>
+        <p class="dialog-text">Please open the image file you want to frame.</p>
+        <p class="dialog-text blue">Hit the "Step 2" button when you are finished.</p>
+        <p class="dialog-text blue" id="step2finished">placeholder</p>
 
-    <button type="button" class="dialog-button" id="step2Button">Step 2</button>
-    <button type="button" class="dialog-button" id="completedButton">Process</button>
-    <button type="button" class="dialog-button cancel" id="cancelButton">Clear</button>
-  </div>
+        <button type="button" class="dialog-button" id="step2Button">Step 2</button>
+        <button type="button" class="dialog-button" id="completedButton">Process</button>
+        <button type="button" class="dialog-button cancel" id="cancelButton">Clear</button>
+    </div>
 
-  <dialog class="dialog" id="exampleDialog">
-    <h1>Parameters</h1>
-    <h2>Mat</h2>
-    <form method="dialog">
-        <p>
-            <label>Units</label>
-            <select id="units">
-                <option selected value="percent">Percent</option>
-                <option value="pixels">Pixels</option>
-            </select>
-        </p>
-        <p class="flex-row">
-            <label>Left</label>
-            <input class="dialog-input small-input" type="text" id="mLeftInput" name="mLeftInput" placeholder="10">
-            <label>Right</label>
-            <input class="dialog-input small-input" type="text" id="mRightInput" name="mRightInput" placeholder="10">
-        </p>
-        <p class="flex-row">
-            <label>Top</label>
-            <input class="dialog-input small-input" type="text" id="mTopInput" name="mTopInput" placeholder="10">
-            <label>Bottom</label>
-            <input class="dialog-input small-input" type="text" id="mBottomInput" name="mBottomInput" placeholder="15">
-        </p>
-        <div class="flex-row">
-            <label>Mat Color:</label>
-            <button class="dialog-button" type="button" id="chooseColor">Choose Color...</button>
-            <div id="colorSwatch" class="color-swatch"></div>
-        </div>
-        <h2>Title</h2>
-        <p>
-            <label>Enter title:</label>
-            <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
-        </p>
-        <p class="flex-row">
-            <label>Choose Font:</label>
-            <select id="fontDropDown">
-                <option class="white" value="" selected>Choose Font</option>
-            </select>
-            <label>Choose Size:</label>
-            <select id="fontSize">
-                <option class="white" value="" selected>Choose Size</option>
-                <option>6</option>
-                <option>12</option>
-                <option>18</option>
-                <option>24</option>
-                <option>36</option>
-                <option>48</option>
-                <option>60</option>
-                <option>72</option>
-                <option>96</option>
-                <option>120</option>
-            </select>
-        </p>
-        <div class="flex-row">
-            <label>Title Color:</label>
-            <button class="dialog-button" type="button" id="chooseColorTitle">Choose Color...</button>
-            <div id="colorSwatchTitle" class="color-swatch"></div>
-        </div>
-        <div class="button-container flex-row">
-            <button class="dialog-button" id="wearedone" type="submit">OK</button>
-            <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
-        </div>
-    </form>
-  </dialog>
+    <dialog class="dialog" id="exampleDialog">
+        <h1>Parameters</h1>
+        <h2>Mat</h2>
+        <form method="dialog">
+            <p>
+                <label>Units</label>
+                <select id="units">
+                    <option selected value="percent">Percent</option>
+                    <option value="pixels">Pixels</option>
+                </select>
+            </p>
+            <p class="flex-row">
+                <label>Left</label>
+                <input class="dialog-input small-input" type="text" id="mLeftInput" name="mLeftInput" placeholder="10">
+                <label>Right</label>
+                <input class="dialog-input small-input" type="text" id="mRightInput" name="mRightInput"
+                    placeholder="10">
+            </p>
+            <p class="flex-row">
+                <label>Top</label>
+                <input class="dialog-input small-input" type="text" id="mTopInput" name="mTopInput" placeholder="10">
+                <label>Bottom</label>
+                <input class="dialog-input small-input" type="text" id="mBottomInput" name="mBottomInput"
+                    placeholder="15">
+            </p>
+            <div class="flex-row">
+                <label>Mat Color:</label>
+                <button class="dialog-button" type="button" id="chooseColor">Choose Color...</button>
+                <div id="colorSwatch" class="color-swatch"></div>
+            </div>
+            <h2>Title</h2>
+            <p>
+                <label>Enter title:</label>
+                <input class="dialog-input" type="text" id="titleInput" name="titleInput" placeholder="Enter title">
+            </p>
+            <p class="flex-row">
+                <label>Choose Font:</label>
+                <select id="fontDropDown">
+                    <option class="white" value="" selected>Choose Font</option>
+                </select>
+                <label>Choose Size:</label>
+                <select id="fontSize">
+                    <option class="white" value="" selected>Choose Size</option>
+                    <option>6</option>
+                    <option>12</option>
+                    <option>18</option>
+                    <option>24</option>
+                    <option>36</option>
+                    <option>48</option>
+                    <option>60</option>
+                    <option>72</option>
+                    <option>96</option>
+                    <option>120</option>
+                </select>
+            </p>
+            <div class="flex-row">
+                <label>Title Color:</label>
+                <button class="dialog-button" type="button" id="chooseColorTitle">Choose Color...</button>
+                <div id="colorSwatchTitle" class="color-swatch"></div>
+            </div>
+            <div class="button-container flex-row">
+                <p id="infoMessage" class="info-message">Please close the color picker to
+                    proceed.</p>
+                <button class="dialog-button" id="wearedone" type="submit">OK</button>
+                <button class="dialog-button cancel" id="bailout" type="reset">Cancel</button>
+            </div>
+        </form>
+    </dialog>
 
 
-<dialog class="dialog" id="dialogCreateFrame">
-    <h1>Parameters</h1>
-    <h2>Frame</h2>
-    <form method="dialog">
-         <p class="flex-row">
-            <label>Frame Width</label>
-            <input class="dialog-input " type="text" id="frameWidth" name="frameWidth" placeholder="5000">
-         </p>
-         <p class="flex-row">
-         </p>   <label>Frame Height</label>
+    <dialog class="dialog" id="dialogCreateFrame">
+        <h1>Parameters</h1>
+        <h2>Frame</h2>
+        <form method="dialog">
+            <p class="flex-row">
+                <label>Frame Width</label>
+                <input class="dialog-input " type="text" id="frameWidth" name="frameWidth" placeholder="5000">
+            </p>
+            <p class="flex-row">
+            </p> <label>Frame Height</label>
             <input class="dialog-input " type="text" id="frameHeight" name="frameHeight" placeholder="4000">
-        </p>
-        <p class="flex-row">
-            <label>Left Border</label>
-            <input class="dialog-input " type="text" id="leftBorder" name="leftBorder" placeholder="100">
-        </p>
-        <p class="flex-row">
-            <label>Right Border</label>
-            <input class="dialog-input " type="text" id="rightBorder" name="rightBorder" placeholder="100">
-        </p>
-        <p class="flex-row">
-            <label>Top Border</label>
-            <input class="dialog-input " type="text" id="topBorder" name="topBorder" placeholder="100">
-        </p>
-        <p class="flex-row">
-            <label>Bottom Border</label>
-            <input class="dialog-input " type="text" id="bottomBorder" name="bottomBorder" placeholder="100">
-        </p>
-        
-       
-        <p>
-            <label>Generative Fill Prompt:</label>
-            <input class="dialog-input" type="text" id="fillPrompt" name="fillPrompt" placeholder="Pine wood texture">
-        </p>
-        
-        <div class="button-container flex-row">
-            <button class="dialog-button" id="createFrameOk" type="submit">Create Frame</button>
-            <button class="dialog-button cancel" id="createFrameCancel" type="reset">Cancel</button>
-        </div>
-    </form>
-  </dialog>
+            </p>
+            <p class="flex-row">
+                <label>Left Border</label>
+                <input class="dialog-input " type="text" id="leftBorder" name="leftBorder" placeholder="100">
+            </p>
+            <p class="flex-row">
+                <label>Right Border</label>
+                <input class="dialog-input " type="text" id="rightBorder" name="rightBorder" placeholder="100">
+            </p>
+            <p class="flex-row">
+                <label>Top Border</label>
+                <input class="dialog-input " type="text" id="topBorder" name="topBorder" placeholder="100">
+            </p>
+            <p class="flex-row">
+                <label>Bottom Border</label>
+                <input class="dialog-input " type="text" id="bottomBorder" name="bottomBorder" placeholder="100">
+            </p>
+
+
+            <p>
+                <label>Generative Fill Prompt:</label>
+                <input class="dialog-input" type="text" id="fillPrompt" name="fillPrompt"
+                    placeholder="Pine wood texture">
+            </p>
+
+            <div class="button-container flex-row">
+                <button class="dialog-button" id="createFrameOk" type="submit">Create Frame</button>
+                <button class="dialog-button cancel" id="createFrameCancel" type="reset">Cancel</button>
+            </div>
+        </form>
+    </dialog>
 
 
 

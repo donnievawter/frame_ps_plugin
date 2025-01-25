@@ -139,6 +139,14 @@ label {
 .dialog-button.cancel:active {
     transform: scale(0.95); /* Slightly shrink on click */
 }
+/* Info message styling */
+.info-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    display: none;
+}
+
 
 .color-swatch {
     display: inline-block;

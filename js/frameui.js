@@ -4,6 +4,7 @@ const { constants } = require("photoshop");
 let dialog, dialogCreateFrame, rgbFloat, fontChoice, fontSize, units, mTop, mLeft, mRight, mBottom, finalBorderWidth, finalBorderHeight, rgbFloatTitle, rgbColorTitle;
 let fillPromptInput, frameWidthInput, leftBorderInput, topBorderInput, bottomBorderInput, rightBorderInput, frameHeightInput
 let c_fillPrompt, c_frameWidth, c_leftBorder, c_topBorder, c_bottomBorder, c_rightBorder, c_frameHeight;
+let pickerWasOpened = false;
 async function buildFontDropdown() {
   //lets also set size
   const ol = document.getElementById('fontSize').options;
@@ -194,13 +195,20 @@ document.getElementById('bailout').addEventListener('click', async () => {
 document.getElementById('chooseColor').addEventListener('click', async () => {
   await photoshop.core.executeAsModal(async () => {
     try {
+      const proceedButton = document.getElementById("wearedone");
+      const infoMessage = document.getElementById("infoMessage");
+      pickerWasOpened = true;
+      proceedButton.disabled = true;
+       infoMessage.style.display = "block"; // Show info message
       // Open color picker
       const openPicker = {
         _target: { _ref: "application" },
         _obj: "showColorPicker"
       };
       const res = await photoshop.action.batchPlay([openPicker], {});
-
+      pickerWasOpened = false;
+      proceedButton.disabled = false;
+infoMessage.style.display = "none"; // Hide info message
       rgbFloat = res[0].RGBFloatColor;
 
       // Use 'grain' if it exists, otherwise fall back to 'green'
@@ -209,11 +217,24 @@ document.getElementById('chooseColor').addEventListener('click', async () => {
       document.getElementById('colorSwatch').style.backgroundColor = rgbColor;
     } catch (error) {
       console.error("Error selecting color:", error);
+      // Hide info message if an error occurs
+      pickerWasOpened = false;
+      proceedButton.disabled = false;
+      infoMessage.style.display = "none";
     }
   })
 });
+
+
 document.getElementById('chooseColorTitle').addEventListener('click', async () => {
+  const proceedButton = document.getElementById("wearedone");
+  const infoMessage = document.getElementById("infoMessage");
+
   await photoshop.core.executeAsModal(async () => {
+    pickerWasOpened = true;
+    proceedButton.disabled = true;
+    infoMessage.style.display = "block"; // Show info message
+
     try {
       // Open color picker
       const openPicker = {
@@ -221,6 +242,10 @@ document.getElementById('chooseColorTitle').addEventListener('click', async () =
         _obj: "showColorPicker"
       };
       const res = await photoshop.action.batchPlay([openPicker], {});
+      
+      pickerWasOpened = false;
+      proceedButton.disabled = false;
+      infoMessage.style.display = "none"; // Hide info message
 
       rgbFloatTitle = res[0].RGBFloatColor;
 
@@ -230,8 +255,12 @@ document.getElementById('chooseColorTitle').addEventListener('click', async () =
       document.getElementById('colorSwatchTitle').style.backgroundColor = rgbColorTitle;
     } catch (error) {
       console.error("Error selecting color:", error);
+      // Hide info message if an error occurs
+      pickerWasOpened = false;
+      proceedButton.disabled = false;
+      infoMessage.style.display = "none";
     }
-  })
+  });
 });
 
 async function showPhotoshop() {
@@ -256,15 +285,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 document.getElementById('createFrameOk').addEventListener('click', async () => {
- console.log("fired createFrameOk");
+  console.log("fired createFrameOk");
   await photoshop.core.executeAsModal(async () => {
     c_fillPrompt = document.getElementById("fillPrompt").value;
-    c_topBorder = parseInt(document.getElementById("topBorder").value,10);
-    c_bottomBorder = parseInt(document.getElementById("bottomBorder").value,10);
-    c_leftBorder = parseInt(document.getElementById("leftBorder").value,10);
-    c_rightBorder = parseInt(document.getElementById("rightBorder").value,10);
-    c_frameHeight = parseInt(document.getElementById("frameHeight").value,10);
-    c_frameWidth = parseInt(document.getElementById("frameWidth").value,10);
+    c_topBorder = parseInt(document.getElementById("topBorder").value, 10);
+    c_bottomBorder = parseInt(document.getElementById("bottomBorder").value, 10);
+    c_leftBorder = parseInt(document.getElementById("leftBorder").value, 10);
+    c_rightBorder = parseInt(document.getElementById("rightBorder").value, 10);
+    c_frameHeight = parseInt(document.getElementById("frameHeight").value, 10);
+    c_frameWidth = parseInt(document.getElementById("frameWidth").value, 10);
     const opts = {
       fillPrompt: c_fillPrompt,
       topBorder: c_topBorder,
