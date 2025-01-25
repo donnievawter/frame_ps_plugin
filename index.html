@@ -99,49 +99,66 @@
         </form>
     </dialog>
 
-
+    <dialog class="dialog" id="instruct">
+        <h1>Choose Generative Fill Option</h1>
+        <form method="dialog">
+            <p class="bluedialog">
+                Choose one of the three options from Generative Fill. If you want more choices, revise the prompt. If
+                you don't see the options, it is because you don't have the "properties" window open. When you are
+                satisfied, click the "Continue" button.</p>
+            <div class="button-container flex-row">
+                <button class="dialog-button" id="continueBuild" type="submit">Continue</button>
+            </div>
+        </form>
+    </dialog>
     <dialog class="dialog" id="dialogCreateFrame">
         <h1>Parameters</h1>
         <h2>Frame</h2>
         <form method="dialog">
             <p class="flex-row">
                 <label>Frame Width</label>
-                <input class="dialog-input " type="text" id="frameWidth" name="frameWidth" placeholder="5000">
+                <input class="dialog-input" type="text" id="frameWidth" name="frameWidth" placeholder="5000">
             </p>
             <p class="flex-row">
-            </p> <label>Frame Height</label>
-            <input class="dialog-input " type="text" id="frameHeight" name="frameHeight" placeholder="4000">
+                <label>Frame Height</label>
+                <input class="dialog-input" type="text" id="frameHeight" name="frameHeight" placeholder="4000">
             </p>
             <p class="flex-row">
                 <label>Left Border</label>
-                <input class="dialog-input " type="text" id="leftBorder" name="leftBorder" placeholder="100">
+                <input class="dialog-input" type="text" id="leftBorder" name="leftBorder" placeholder="100">
             </p>
             <p class="flex-row">
                 <label>Right Border</label>
-                <input class="dialog-input " type="text" id="rightBorder" name="rightBorder" placeholder="100">
+                <input class="dialog-input" type="text" id="rightBorder" name="rightBorder" placeholder="100">
             </p>
             <p class="flex-row">
                 <label>Top Border</label>
-                <input class="dialog-input " type="text" id="topBorder" name="topBorder" placeholder="100">
+                <input class="dialog-input" type="text" id="topBorder" name="topBorder" placeholder="100">
             </p>
             <p class="flex-row">
                 <label>Bottom Border</label>
-                <input class="dialog-input " type="text" id="bottomBorder" name="bottomBorder" placeholder="100">
+                <input class="dialog-input" type="text" id="bottomBorder" name="bottomBorder" placeholder="100">
             </p>
-
-
-            <p>
+            <p class="flex-row">
                 <label>Generative Fill Prompt:</label>
-                <input class="dialog-input" type="text" id="fillPrompt" name="fillPrompt"
+            </p>
+            <p class="flex-row">
+                <input class="dialog-input full-width" type="text" id="fillPrompt" name="fillPrompt"
                     placeholder="Pine wood texture">
             </p>
-
+            <p class="flex-row">
+                <label for="editable">Editable</label>
+                <input type="checkbox" id="editable" name="editable">
+                <button id="questionButton" type="button">?</button>
+            </p>
             <div class="button-container flex-row">
                 <button class="dialog-button" id="createFrameOk" type="submit">Create Frame</button>
                 <button class="dialog-button cancel" id="createFrameCancel" type="reset">Cancel</button>
             </div>
         </form>
     </dialog>
+
+
 
 
 

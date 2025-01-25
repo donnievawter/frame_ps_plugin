@@ -452,535 +452,80 @@ async function createFrameFile(opts) {
                     fill: constants.DocumentFill.TRANSPARENT,  // Set background to transparent
                     depth: 16  // Set bit depth to 16-bit
                 });
-                if (opts.fillPrompt) {
+                let selectionObject = { "_obj": "set", "_target": [{ "_property": "selection", "_ref": "channel" }], "to": { "_obj": "rectangle", "bottom": { "_unit": "pixelsUnit", "_value": opts.frameHeight - opts.bottomBorder }, "left": { "_unit": "pixelsUnit", "_value": opts.leftBorder }, "right": { "_unit": "pixelsUnit", "_value": opts.frameWidth - opts.rightBorder }, "top": { "_unit": "pixelsUnit", "_value": opts.topBorder } } };
+
+                let inverseObject = { "_obj": "inverse" };
+                let genFillObject = { "_obj": "syntheticFill", "_target": [{ "_enum": "ordinal", "_ref": "document" }], "prompt": opts.fillPrompt, "serviceID": "clio", "serviceOptionsList": { "clio": { "_obj": "clio", "dualCrop": true, "gi_ADVANCED": "{\"enable_mts\":true}", "gi_CONTENT_PRESERVE": 0, "gi_CROP": false, "gi_DILATE": false, "gi_ENABLE_PROMPT_FILTER": true, "gi_GUIDANCE": 6, "gi_MODE": "tinp", "gi_NUM_STEPS": -1, "gi_PROMPT": opts.fillPrompt, "gi_SEED": -1, "gi_SIMILARITY": 0 } }, "workflowType": { "_enum": "genWorkflow", "_value": "in_painting" } };
+                let mergeObject = {
+                    "_obj": "mergeVisible"
+                };
+                let nameObject = {
+                    "_obj": "set",
+                    "_target": [
+                        {
+                            "_enum": "ordinal",
+                            "_ref": "layer"
+                        }
+                    ],
+                    "to": {
+                        "_obj": "layer",
+                        "name": "frame"
+                    }
+                };
+                let layerEffectsObject = { "_obj": "set", "_target": [{ "_property": "layerEffects", "_ref": "property" }, { "_enum": "ordinal", "_ref": "layer" }], "to": { "_obj": "layerEffects", "bevelEmboss": { "_obj": "bevelEmboss", "antialiasGloss": false, "bevelDirection": { "_enum": "bevelEmbossStampStyle", "_value": "in" }, "bevelStyle": { "_enum": "bevelEmbossStyle", "_value": "innerBevel" }, "bevelTechnique": { "_enum": "bevelTechnique", "_value": "softMatte" }, "blur": { "_unit": "pixelsUnit", "_value": 20.0 }, "enabled": true, "highlightColor": { "_obj": "RGBColor", "blue": 254.99998480081558, "grain": 255.0, "red": 255.0 }, "highlightMode": { "_enum": "blendMode", "_value": "screen" }, "highlightOpacity": { "_unit": "percentUnit", "_value": 75.0 }, "localLightingAltitude": { "_unit": "angleUnit", "_value": 30.0 }, "localLightingAngle": { "_unit": "angleUnit", "_value": 90.0 }, "present": true, "shadowColor": { "_obj": "RGBColor", "blue": 0.0, "grain": 0.0, "red": 0.0 }, "shadowMode": { "_enum": "blendMode", "_value": "multiply" }, "shadowOpacity": { "_unit": "percentUnit", "_value": 75.0 }, "showInDialog": true, "softness": { "_unit": "pixelsUnit", "_value": 5.0 }, "strengthRatio": { "_unit": "percentUnit", "_value": 200.0 }, "transferSpec": { "_obj": "shapeCurveType", "name": "Linear" }, "useGlobalAngle": true, "useShape": false, "useTexture": false }, "dropShadow": { "_obj": "dropShadow", "antiAlias": false, "blur": { "_unit": "pixelsUnit", "_value": 30.0 }, "chokeMatte": { "_unit": "pixelsUnit", "_value": 10.0 }, "color": { "_obj": "RGBColor", "blue": 21.2258168309927, "grain": 15.141234677284956, "red": 15.527168568223715 }, "distance": { "_unit": "pixelsUnit", "_value": 20.0 }, "enabled": true, "layerConceals": true, "localLightingAngle": { "_unit": "angleUnit", "_value": 135.0 }, "mode": { "_enum": "blendMode", "_value": "multiply" }, "noise": { "_unit": "percentUnit", "_value": 0.0 }, "opacity": { "_unit": "percentUnit", "_value": 50.0 }, "present": true, "showInDialog": true, "transferSpec": { "_obj": "shapeCurveType", "name": "Linear" }, "useGlobalAngle": false }, "globalLightingAngle": { "_unit": "angleUnit", "_value": 135.0 }, "innerShadow": { "_obj": "innerShadow", "antiAlias": false, "blur": { "_unit": "pixelsUnit", "_value": 20.0 }, "chokeMatte": { "_unit": "pixelsUnit", "_value": 5.0 }, "color": { "_obj": "RGBColor", "blue": 0.0, "grain": 0.0, "red": 0.0 }, "distance": { "_unit": "pixelsUnit", "_value": 10.0 }, "enabled": true, "localLightingAngle": { "_unit": "angleUnit", "_value": 90.0 }, "mode": { "_enum": "blendMode", "_value": "multiply" }, "noise": { "_unit": "percentUnit", "_value": 0.0 }, "opacity": { "_unit": "percentUnit", "_value": 50.0 }, "present": true, "showInDialog": true, "transferSpec": { "_obj": "shapeCurveType", "name": "Linear" }, "useGlobalAngle": true }, "scale": { "_unit": "percentUnit", "_value": 200.0 }, "solidFill": { "_obj": "solidFill", "color": { "_obj": "RGBColor", "blue": 0.0, "grain": 0.0, "red": 0.0 }, "enabled": true, "mode": { "_enum": "blendMode", "_value": "multiply" }, "opacity": { "_unit": "percentUnit", "_value": 0.0 }, "present": true, "showInDialog": true } } };
+
+
+                let fillObject = { "_obj": "fill", "mode": { "_enum": "blendMode", "_value": "normal" }, "opacity": { "_unit": "percentUnit", "_value": 100.0 }, "using": { "_enum": "fillContents", "_value": "black" } };
+
+                const checked = document.getElementById("editable").checked;
+                if (opts.fillPrompt && !checked) {
                     await photoshop.action.batchPlay(
-                        [
-                            {
-                                "_obj": "set",
-                                "_target": [
-                                    {
-                                        "_property": "selection",
-                                        "_ref": "channel"
-                                    }
-                                ],
-                                "to": {
-                                    "_obj": "rectangle",
-                                    "bottom": {
-                                        "_unit": "pixelsUnit",
-                                        "_value": opts.frameHeight - opts.bottomBorder
-                                    },
-                                    "left": {
-                                        "_unit": "pixelsUnit",
-                                        "_value": opts.leftBorder
-                                    },
-                                    "right": {
-                                        "_unit": "pixelsUnit",
-                                        "_value": opts.frameWidth - opts.rightBorder
-                                    },
-                                    "top": {
-                                        "_unit": "pixelsUnit",
-                                        "_value": opts.topBorder
-                                    }
-                                }
-                            },
-                            {
-                                "_obj": "inverse"
-                            },
-                            {
-                                "_obj": "syntheticFill",
-                                "_target": [
-                                    {
-                                        "_enum": "ordinal",
-                                        "_ref": "document"
-                                    }
-                                ],
-
-
-                                "prompt": opts.fillPrompt,
-                                "serviceID": "clio",
-                                "serviceOptionsList": {
-                                    "clio": {
-                                        "_obj": "clio",
-                                        "dualCrop": true,
-                                        "gi_ADVANCED": "{\"enable_mts\":true}",
-                                        "gi_CONTENT_PRESERVE": 0,
-                                        "gi_CROP": false,
-                                        "gi_DILATE": false,
-                                        "gi_ENABLE_PROMPT_FILTER": true,
-                                        "gi_GUIDANCE": 6,
-                                        "gi_MODE": "tinp",
-                                        "gi_NUM_STEPS": -1,
-                                        "gi_PROMPT": opts.fillPrompt,
-                                        "gi_SEED": -1,
-                                        "gi_SIMILARITY": 0
-                                    }
-                                },
-                                "workflowType": {
-                                    "_enum": "genWorkflow",
-                                    "_value": "in_painting"
-                                }
-                            },
-                            {
-                                "_obj": "mergeVisible"
-                            },
-                            {
-                                "_obj": "set",
-                                "_target": [
-                                    {
-                                        "_enum": "ordinal",
-                                        "_ref": "layer"
-                                    }
-                                ],
-                                "to": {
-                                    "_obj": "layer",
-                                    "name": "frame"
-                                }
-                            },
-                            {
-                                "_obj": "set",
-                                "_target": [
-                                    {
-                                        "_property": "layerEffects",
-                                        "_ref": "property"
-                                    },
-                                    {
-                                        "_enum": "ordinal",
-                                        "_ref": "layer"
-                                    }
-                                ],
-                                "to": {
-                                    "_obj": "layerEffects",
-                                    "bevelEmboss": {
-                                        "_obj": "bevelEmboss",
-                                        "antialiasGloss": false,
-                                        "bevelDirection": {
-                                            "_enum": "bevelEmbossStampStyle",
-                                            "_value": "in"
-                                        },
-                                        "bevelStyle": {
-                                            "_enum": "bevelEmbossStyle",
-                                            "_value": "innerBevel"
-                                        },
-                                        "bevelTechnique": {
-                                            "_enum": "bevelTechnique",
-                                            "_value": "softMatte"
-                                        },
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "enabled": true,
-                                        "highlightColor": {
-                                            "_obj": "RGBColor",
-                                            "blue": 254.99998480081558,
-                                            "grain": 255.0,
-                                            "red": 255.0
-                                        },
-                                        "highlightMode": {
-                                            "_enum": "blendMode",
-                                            "_value": "screen"
-                                        },
-                                        "highlightOpacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 75.0
-                                        },
-                                        "localLightingAltitude": {
-                                            "_unit": "angleUnit",
-                                            "_value": 30.0
-                                        },
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 90.0
-                                        },
-                                        "present": true,
-                                        "shadowColor": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "shadowMode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "shadowOpacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 75.0
-                                        },
-                                        "showInDialog": true,
-                                        "softness": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 5.0
-                                        },
-                                        "strengthRatio": {
-                                            "_unit": "percentUnit",
-                                            "_value": 200.0
-                                        },
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": true,
-                                        "useShape": false,
-                                        "useTexture": false
-                                    },
-                                    "dropShadow": {
-                                        "_obj": "dropShadow",
-                                        "antiAlias": false,
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 30.0
-                                        },
-                                        "chokeMatte": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 10.0
-                                        },
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 21.2258168309927,
-                                            "grain": 15.141234677284956,
-                                            "red": 15.527168568223715
-                                        },
-                                        "distance": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "enabled": true,
-                                        "layerConceals": true,
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 135.0
-                                        },
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "noise": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 50.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true,
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": false
-                                    },
-                                    "globalLightingAngle": {
-                                        "_unit": "angleUnit",
-                                        "_value": 135.0
-                                    },
-                                    "innerShadow": {
-                                        "_obj": "innerShadow",
-                                        "antiAlias": false,
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "chokeMatte": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 5.0
-                                        },
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "distance": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 10.0
-                                        },
-                                        "enabled": true,
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 90.0
-                                        },
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "noise": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 50.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true,
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": true
-                                    },
-                                    "scale": {
-                                        "_unit": "percentUnit",
-                                        "_value": 200.0
-                                    },
-                                    "solidFill": {
-                                        "_obj": "solidFill",
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "enabled": true,
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true
-                                    }
-                                }
-                            }
+                        [selectionObject,
+                            inverseObject,
+                            genFillObject,
+                            mergeObject,
+                            nameObject,
+                            layerEffectsObject
                         ]
                         , {})
+                } else if (opts.fillPrompt && checked) {
+                    await photoshop.action.batchPlay(
+                        [selectionObject,
+                            inverseObject,
+                            genFillObject
+                        ]
+                        , {})
+                    await photoshop.core.executeAsModal(async () => {
+                        dialoginstruct.show();
+                    });
+
+                    // Add event listener for the "Continue" button
+                    document.getElementById('continueBuild').addEventListener('click', async () => {
+                        try {
+                            console.log('Continue button clicked');
+                            // Your additional processing code here
+                         await require('photoshop').core.executeAsModal(async () => {
+                            const res = await photoshop.action.batchPlay(
+                                [mergeObject,
+                                    nameObject,
+                                    layerEffectsObject
+                                ]
+                                , {});
+                            console.log("batchPlay finished", res);
+                            dialoginstruct.close();
+                         }
+                     );
+                      } catch (e) {
+                            console.log(e);
+                        }
+                    });
                 } else {
                     await photoshop.action.batchPlay(
-                        [
-                            { "_obj": "set", "_target": [{ "_property": "selection", "_ref": "channel" }], "to": { "_obj": "rectangle", "bottom": { "_unit": "pixelsUnit", "_value": opts.frameHeight-opts.bottomBorder }, "left": { "_unit": "pixelsUnit", "_value": opts.leftBorder }, "right": { "_unit": "pixelsUnit", "_value": opts.frameWidth-opts.rightBorder }, "top": { "_unit": "pixelsUnit", "_value": opts.topBorder } } },
-                            { "_obj": "inverse" },
-                            { "_obj": "fill", "mode": { "_enum": "blendMode", "_value": "normal" }, "opacity": { "_unit": "percentUnit", "_value": 100.0 }, "using": { "_enum": "fillContents", "_value": "black" } },
-                            
-
-                            {
-                                "_obj": "set",
-                                "_target": [
-                                    {
-                                        "_enum": "ordinal",
-                                        "_ref": "layer"
-                                    }
-                                ],
-                                "to": {
-                                    "_obj": "layer",
-                                    "name": "frame"
-                                }
-                            },
-                            {
-                                "_obj": "set",
-                                "_target": [
-                                    {
-                                        "_property": "layerEffects",
-                                        "_ref": "property"
-                                    },
-                                    {
-                                        "_enum": "ordinal",
-                                        "_ref": "layer"
-                                    }
-                                ],
-                                "to": {
-                                    "_obj": "layerEffects",
-                                    "bevelEmboss": {
-                                        "_obj": "bevelEmboss",
-                                        "antialiasGloss": false,
-                                        "bevelDirection": {
-                                            "_enum": "bevelEmbossStampStyle",
-                                            "_value": "in"
-                                        },
-                                        "bevelStyle": {
-                                            "_enum": "bevelEmbossStyle",
-                                            "_value": "innerBevel"
-                                        },
-                                        "bevelTechnique": {
-                                            "_enum": "bevelTechnique",
-                                            "_value": "softMatte"
-                                        },
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "enabled": true,
-                                        "highlightColor": {
-                                            "_obj": "RGBColor",
-                                            "blue": 254.99998480081558,
-                                            "grain": 255.0,
-                                            "red": 255.0
-                                        },
-                                        "highlightMode": {
-                                            "_enum": "blendMode",
-                                            "_value": "screen"
-                                        },
-                                        "highlightOpacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 75.0
-                                        },
-                                        "localLightingAltitude": {
-                                            "_unit": "angleUnit",
-                                            "_value": 30.0
-                                        },
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 90.0
-                                        },
-                                        "present": true,
-                                        "shadowColor": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "shadowMode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "shadowOpacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 75.0
-                                        },
-                                        "showInDialog": true,
-                                        "softness": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 5.0
-                                        },
-                                        "strengthRatio": {
-                                            "_unit": "percentUnit",
-                                            "_value": 200.0
-                                        },
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": true,
-                                        "useShape": false,
-                                        "useTexture": false
-                                    },
-                                    "dropShadow": {
-                                        "_obj": "dropShadow",
-                                        "antiAlias": false,
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 30.0
-                                        },
-                                        "chokeMatte": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 10.0
-                                        },
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 21.2258168309927,
-                                            "grain": 15.141234677284956,
-                                            "red": 15.527168568223715
-                                        },
-                                        "distance": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "enabled": true,
-                                        "layerConceals": true,
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 135.0
-                                        },
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "noise": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 50.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true,
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": false
-                                    },
-                                    "globalLightingAngle": {
-                                        "_unit": "angleUnit",
-                                        "_value": 135.0
-                                    },
-                                    "innerShadow": {
-                                        "_obj": "innerShadow",
-                                        "antiAlias": false,
-                                        "blur": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 20.0
-                                        },
-                                        "chokeMatte": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 5.0
-                                        },
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "distance": {
-                                            "_unit": "pixelsUnit",
-                                            "_value": 10.0
-                                        },
-                                        "enabled": true,
-                                        "localLightingAngle": {
-                                            "_unit": "angleUnit",
-                                            "_value": 90.0
-                                        },
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "noise": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 50.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true,
-                                        "transferSpec": {
-                                            "_obj": "shapeCurveType",
-                                            "name": "Linear"
-                                        },
-                                        "useGlobalAngle": true
-                                    },
-                                    "scale": {
-                                        "_unit": "percentUnit",
-                                        "_value": 200.0
-                                    },
-                                    "solidFill": {
-                                        "_obj": "solidFill",
-                                        "color": {
-                                            "_obj": "RGBColor",
-                                            "blue": 0.0,
-                                            "grain": 0.0,
-                                            "red": 0.0
-                                        },
-                                        "enabled": true,
-                                        "mode": {
-                                            "_enum": "blendMode",
-                                            "_value": "multiply"
-                                        },
-                                        "opacity": {
-                                            "_unit": "percentUnit",
-                                            "_value": 0.0
-                                        },
-                                        "present": true,
-                                        "showInDialog": true
-                                    }
-                                }
-                            }
+                        [selectionObject,
+                            inverseObject,
+                            fillObject,
+                            nameObject,
+                            layerEffectsObject
                         ]
                         , {})
                 }

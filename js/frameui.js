@@ -1,7 +1,7 @@
 const { storage } = require('uxp');
 const photoshop = require('photoshop');
 const { constants } = require("photoshop");
-let dialog, dialogCreateFrame, rgbFloat, fontChoice, fontSize, units, mTop, mLeft, mRight, mBottom, finalBorderWidth, finalBorderHeight, rgbFloatTitle, rgbColorTitle;
+let dialoginstruct, dialog, dialogCreateFrame, rgbFloat, fontChoice, fontSize, units, mTop, mLeft, mRight, mBottom, finalBorderWidth, finalBorderHeight, rgbFloatTitle, rgbColorTitle;
 let fillPromptInput, frameWidthInput, leftBorderInput, topBorderInput, bottomBorderInput, rightBorderInput, frameHeightInput
 let c_fillPrompt, c_frameWidth, c_leftBorder, c_topBorder, c_bottomBorder, c_rightBorder, c_frameHeight;
 let pickerWasOpened = false;
@@ -67,6 +67,20 @@ document.getElementById('createFrameButton').addEventListener('click', async () 
   await photoshop.core.executeAsModal(async () => {
 
     dialogCreateFrame.show();
+  });
+});
+document.getElementById('createFrameCancel').addEventListener('click', async () => {
+  await photoshop.core.executeAsModal(async () => {
+
+    dialogCreateFrame.close();
+    destroyVars();
+  });
+});
+document.getElementById('questionButton').addEventListener('click', async () => {
+  await photoshop.core.executeAsModal(async () => {
+    const mess = "Editable means that the build process will pause\n and let you choose a different option.\nIf not editiable then the first option will be chosen.";
+    await alertFunction(mess);
+    ;
   })
 });
 
@@ -199,7 +213,7 @@ document.getElementById('chooseColor').addEventListener('click', async () => {
       const infoMessage = document.getElementById("infoMessage");
       pickerWasOpened = true;
       proceedButton.disabled = true;
-       infoMessage.style.display = "block"; // Show info message
+      infoMessage.style.display = "block"; // Show info message
       // Open color picker
       const openPicker = {
         _target: { _ref: "application" },
@@ -208,7 +222,7 @@ document.getElementById('chooseColor').addEventListener('click', async () => {
       const res = await photoshop.action.batchPlay([openPicker], {});
       pickerWasOpened = false;
       proceedButton.disabled = false;
-infoMessage.style.display = "none"; // Hide info message
+      infoMessage.style.display = "none"; // Hide info message
       rgbFloat = res[0].RGBFloatColor;
 
       // Use 'grain' if it exists, otherwise fall back to 'green'
@@ -242,7 +256,7 @@ document.getElementById('chooseColorTitle').addEventListener('click', async () =
         _obj: "showColorPicker"
       };
       const res = await photoshop.action.batchPlay([openPicker], {});
-      
+
       pickerWasOpened = false;
       proceedButton.disabled = false;
       infoMessage.style.display = "none"; // Hide info message
@@ -281,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //dialog1 = document.getElementById('initializeDialog');
   dialog = document.getElementById('exampleDialog');
   dialogCreateFrame = document.getElementById("dialogCreateFrame");
+  dialoginstruct = document.getElementById("instruct");
   //dialog1.show();
 
 });
