@@ -64,4 +64,4 @@ You can alter these layers as you like. Changing the font, size and location of 
 3. Generative Fill is used to create the borders. Leave the prompt blank if you want a solid black border.
 4. If you choose editable then the build process will pause while you interact with generative fill. Otherwise it will just take the first option.
 5. Click Create Frame to generate the frame.
-6. [Go to this step](#Press-_Step-1_-button_)
+6. [Go to step 3](#setting-the-items_)
