@@ -201,46 +201,24 @@ async function addTitle(text) {
             height: image.height / 50
         }
         const pixHeight = pos.height * 50 / 1200 * parseInt(fontSize, 10);;
-      
+
         const op = {
             name: "title",
             contents: text,
             fontName: fontChoice[0],
             fontSize: pixHeight,
             position: pos,
-             
             justification: constants.Justification.CENTER
         };
-       
+
         theLayer = await image.createTextLayer(op);
-        //Setting the color
-         await photoshop.action.batchPlay(
-[
-   {
-      _obj: "set",
-      _target: [
-         {
-            _ref: "property",
-            _property: "textStyle"
-         },
-         {
-            _ref: "textLayer",
-            _enum: "ordinal",
-            _value: "targetEnum"
-         }
-      ],
-      to: {
-         _obj: "textStyle",
-         color:rgbFloatTitle
-      },
-      _options: {
-         dialogOptions: "dontDisplay"
-      }
-   }
-],{});
 
+        const co = new app.SolidColor();
+        co.rgb.red = rgbFloatTitle.red;
+        co.rgb.green = rgbFloatTitle.grain;
+        co.rgb.blue = rgbFloatTitle.blue;
 
-
+        theLayer.textItem.characterStyle.color = co;
         let sourceLayer;
         for (var i = 0; i < image.layers.length; i++) {
             if ((image.layers[i].name === text) || (image.layers[i].name === 'title')) {
@@ -253,6 +231,7 @@ async function addTitle(text) {
         sourceLayer.name = "title";
         await sourceLayer.move(image.layers[0], constants.ElementPlacement.PLACEBEFORE);
         //center it
+
         await photoshop.action.batchPlay(
             [
                 {
