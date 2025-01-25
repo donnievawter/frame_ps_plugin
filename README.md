@@ -22,7 +22,7 @@ This project is designed to add virtual frames to an image in Photoshop.
    ![Choose Files](assets/choosefiles.png)
 1. Create the base frame or choose a file. To create a frame [See here](#Creating-a-Base-Frame)  
 1. Choose the frame file and make it active.
-2. {#step1}Press "Step 1" button.
+2. Press "Step 1" button.
 3. Note that any layer effects on the frame will be disabled. This may change the appearance of the frame. Don't worry. They will be re-enabled after processing.
 3. Open the image you want to frame
 4. Press "Step 2" button
@@ -64,4 +64,4 @@ You can alter these layers as you like. Changing the font, size and location of 
 3. Generative Fill is used to create the borders. Leave the prompt blank if you want a solid black border.
 4. If you choose editable then the build process will pause while you interact with generative fill. Otherwise it will just take the first option.
 5. Click Create Frame to generate the frame.
-6. [Go to this step](#step1)
+6. [Go to this step](Press-_Step-1_-button_)
