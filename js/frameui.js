@@ -133,14 +133,14 @@ document.getElementById('completedButton').addEventListener('click', async () =>
       image.createLayerGroup({ fromLayers: image.layers, name: "pic" });
 
       const savedPreferences = JSON.parse(localStorage.getItem('userPreferences'));
-
+//console.log("savedPreferences", savedPreferences);
       if (savedPreferences) {
         document.getElementById('titleInput').value = savedPreferences.title || '';
         document.getElementById('mLeftInput').value = savedPreferences.mLeft || '10';
         document.getElementById('mRightInput').value = savedPreferences.mRight || '10';
         document.getElementById('mTopInput').value = savedPreferences.mTop || '10';
         document.getElementById('mBottomInput').value = savedPreferences.mBottom || '10';
-        document.getElementById('units').value = savedPreferences.units || 'percentage';
+        document.getElementById('units').value = savedPreferences.units || 'percent';
 
         document.getElementById('colorSwatch').style.backgroundColor = savedPreferences.matColor || '`rgb(255, 255, 255)`';
         document.getElementById('colorSwatchTitle').style.backgroundColor = savedPreferences.titleColor || '`rgb(255, 255, 255)`';
@@ -157,7 +157,7 @@ document.getElementById('completedButton').addEventListener('click', async () =>
         document.getElementById('mRightInput').value = '10';
         document.getElementById('mTopInput').value = '10';
         document.getElementById('mBottomInput').value = '10';
-        document.getElementById('units').value = 'percentage';
+        document.getElementById('units').value = 'percent';
 
         document.getElementById('titleInput').value = '';
         document.getElementById('colorSwatchTitle').style.backgroundColor = '`rgb(255, 255, 255)`';
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 document.getElementById('createFrameOk').addEventListener('click', async () => {
-  console.log("fired createFrameOk");
+ // console.log("fired createFrameOk");
   await photoshop.core.executeAsModal(async () => {
     c_fillPrompt = document.getElementById("fillPrompt").value;
     c_topBorder = parseInt(document.getElementById("topBorder").value, 10);

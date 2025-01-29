@@ -311,6 +311,7 @@ async function copyFrameToImage() {
     const theTop = await image.layers.length;
     const theHeightScale = 100 * image.height / frame.height;
     const theWidthScale = 100 * image.width / frame.width;
+  //  console.log(theHeightScale,theWidthScale);
     let anchorPos = constants.AnchorPosition
     frame.selection.deselect();
     await frame.layers[0].duplicate(image, constants.ElementPlacement.PLACEATEND, "frame");
@@ -358,6 +359,7 @@ async function copyFrameToImage() {
         }
     }
     await sourceLayer.move(destLayer, constants.ElementPlacement.PLACEAFTER);
+ //  console.log("pic",sourceLayer.bounds,"frame",destLayer.bounds,"mat",image.layers.getByName("mat color").bounds);
     await useLayerEffects(image, "frame", false);
     await image.trim(constants.TrimType.TRANSPARENT);
     await useLayerEffects(image, "frame", true);
@@ -434,14 +436,14 @@ async function setCanvas(doc) {
     await doc.resizeCanvas(newCanvasWidth, newCanvasHeight);
 }
 async function createFrameFile(opts) {
-    console.log("in createFrame", opts);
-    console.log(opts.frameWidth, typeof (opts.frameWidth));
+  //  console.log("in createFrame", opts);
+  //  console.log(opts.frameWidth, typeof (opts.frameWidth));
     try {
         await require('photoshop').core.executeAsModal(
             async function createNewDocument() {
                 // const app = require('photoshop').app;
                 // const constants = require('photoshop').constants;
-                console.log("newdoc");
+             //   console.log("newdoc");
                 let newDoc = await app.createDocument({
                     width: opts.frameWidth,
                     height: opts.frameHeight,
@@ -502,7 +504,7 @@ async function createFrameFile(opts) {
                     // Add event listener for the "Continue" button
                     document.getElementById('continueBuild').addEventListener('click', async () => {
                         try {
-                            console.log('Continue button clicked');
+                        //    console.log('Continue button clicked');
                             // Your additional processing code here
                          await require('photoshop').core.executeAsModal(async () => {
                             const res = await photoshop.action.batchPlay(
@@ -511,7 +513,7 @@ async function createFrameFile(opts) {
                                     layerEffectsObject
                                 ]
                                 , {});
-                            console.log("batchPlay finished", res);
+                         //   console.log("batchPlay finished", res);
                             dialoginstruct.close();
                          }
                      );
@@ -629,6 +631,7 @@ async function destroyVars() {
     document.getElementById('step1finished').style.display = 'none';
     document.getElementById('step2finished').style.display = 'none';
     document.getElementById('completedButton').style.display = 'none';
+     document.getElementById('units').value = 'percent';
     finalBorderHeight = null;
     finalBorderWidth = null;
 }
