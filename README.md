@@ -11,7 +11,7 @@ This project is designed to add virtual frames to an image in Photoshop.
 
 ## Installation
   This is a photoshop plug-in and you need the ccx file.
-  It will be available in the Photoshop Marketplace or if you fork the code you can generate your own
+  It is available in the Photoshop Marketplace or if you fork the code you can generate your own
 
 ## Useage
     After installation you go to Plugins>Add Frame>Add Frame

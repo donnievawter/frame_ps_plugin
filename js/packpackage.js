@@ -5,7 +5,7 @@ const path = require('path');
 const pluginFolder = '/Users/donaldvawter/OneDrive/frame_ps_plugin'; // Adjust this path
 const outputFilePath = '/Users/donaldvawter/OneDrive/framepluginpackage/fb46891e_PS.ccx'; // Adjust this path
 const excludedFolders = ['.git', '.vscode'];
-
+const excludedFles = ['.DS_Store', 'Thumbs.db','lightbase.psd','darkbase.psd','.gitignore','update_versions.sh'];
 async function packagePlugin() {
     const output = fs.createWriteStream(outputFilePath);
     const archive = archiver('zip', {
@@ -29,7 +29,8 @@ async function packagePlugin() {
             const filePath = path.join(pluginFolder, file);
             if (fs.statSync(filePath).isDirectory()) {
                 archive.directory(filePath, file);
-            } else {
+            } else if(!excludedFles.includes(file)) {
+            console.log(file);
                 archive.file(filePath, { name: file });
             }
         }

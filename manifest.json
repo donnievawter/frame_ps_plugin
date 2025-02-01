@@ -1,5 +1,5 @@
 {
-  "id":  "fb46891e",
+  "id": "fb46891e",
   "name": "Add Frame",
   "version": "1.0.0",
   "main": "index.html",
@@ -35,7 +35,7 @@
         {
           "width": 23,
           "height": 23,
-          "path": "assets/icons/frame23.png",
+          "path": "assets/icons/darkframe.png",
           "scale": [
             1,
             2
@@ -43,7 +43,18 @@
           "theme": [
             "darkest",
             "dark",
-            "medium",
+            "medium"
+          ]
+        },
+        {
+          "width": 23,
+          "height": 23,
+          "path": "assets/icons/lightframe.png",
+          "scale": [
+            1,
+            2
+          ],
+          "theme": [
             "lightest",
             "light",
             "all"
@@ -56,7 +67,7 @@
     {
       "width": 23,
       "height": 23,
-      "path": "assets/icons/frame23.png",
+      "path": "assets/icons/darkframe.png",
       "scale": [
         1,
         2
@@ -64,7 +75,21 @@
       "theme": [
         "darkest",
         "dark",
-        "medium",
+        "medium"
+      ],
+      "species": [
+        "pluginList"
+      ]
+    },
+    {
+      "width": 23,
+      "height": 23,
+      "path": "assets/icons/lightframe.png",
+      "scale": [
+        1,
+        2
+      ],
+      "theme": [
         "lightest",
         "light",
         "all"
@@ -73,15 +98,8 @@
         "pluginList"
       ]
     }
-  ]
-,
-    "requiredPermissions": {
-        
-        "localFileSystem": "request"
-    
+  ],
+  "requiredPermissions": {
+    "localFileSystem": "request"
+  }
 }
-
-       
-    
-}
-
